@@ -1,0 +1,47 @@
+# PlantillaHíbrida - gitignore
+
+# Datos
+data/
+*.csv
+*.xlsx
+*.xls
+
+# Modelos entrenados
+modelos/
+*.pkl
+*.pickle
+
+# Resultados
+resultados/
+output/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# NLTK data (se descarga automáticamente)
+nltk_data/
+
+# Logs
+*.log
