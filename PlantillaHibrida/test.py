@@ -13,6 +13,11 @@ import numpy as np
 from pathlib import Path
 from glob import glob
 
+import re
+import nltk
+from nltk.corpus import stopwords
+from sklearn.base import BaseEstimator, TransformerMixin
+
 # Sklearn imports
 from sklearn.metrics import (
     f1_score, accuracy_score, precision_score, recall_score,
@@ -22,6 +27,52 @@ from sklearn.metrics import (
 # Funciones propias
 from funciones import load_config, load_data, print_section_header
 
+
+try:
+    STOP_WORDS_DICT = {
+        'spanish': set(stopwords.words('spanish')),
+        'english': set(stopwords.words('english'))
+    }
+except Exception as e:
+    STOP_WORDS_DICT = {'spanish': set(), 'english': set()}
+
+# --- PEGAR LAS CLASES PERSONALIZADAS AQUÍ ---
+class TextCleaner(BaseEstimator, TransformerMixin):
+    def __init__(self, language='spanish'):
+        self.language = language
+    
+    def fit(self, X, y=None):
+        return self
+    
+    def transform(self, X):
+        stop_words = STOP_WORDS_DICT.get(self.language, set())
+            
+        if isinstance(X, pd.Series):
+            return X.apply(lambda t: self._clean_text(t, stop_words))
+        elif isinstance(X, pd.DataFrame):
+            return X.iloc[:, 0].apply(lambda t: self._clean_text(t, stop_words))
+        else:
+            return pd.Series(X).apply(lambda t: self._clean_text(t, stop_words))
+    
+    def _clean_text(self, text, stop_words):
+        if not isinstance(text, str):
+            return ""
+        
+        text = text.lower()
+        text = re.sub(r'[^\w\s]', '', text)
+        tokens = text.split()
+        
+        filtered_tokens = [word for word in tokens if word not in stop_words]
+        return " ".join(filtered_tokens)
+
+class DenseTransformer(BaseEstimator, TransformerMixin):
+    def fit(self, X, y=None):
+        return self
+    
+    def transform(self, X):
+        if hasattr(X, "toarray"):
+            return X.toarray()
+        return X
 
 def cargar_modelo(ruta_modelo: str):
     """
@@ -177,7 +228,7 @@ def main():
         with open(le_path, 'rb') as f:
             le = pickle.load(f)
         
-        if y_test.dtype == 'object':
+        if not pd.api.types.is_numeric_dtype(y_test):
             y_test_encoded = le.transform(y_test)
             print(f"✓ Variable objetivo decodificada usando LabelEncoder guardado")
         else:
