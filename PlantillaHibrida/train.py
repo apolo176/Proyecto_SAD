@@ -54,7 +54,18 @@ except LookupError:
     nltk.download('stopwords', quiet=True)
     nltk.download('punkt', quiet=True)
 
+# NUEVO: Extraer stopwords a un diccionario nativo de Python para evitar
+# que joblib intente serializar el CorpusReader de NLTK
+try:
+    STOP_WORDS_DICT = {
+        'spanish': set(stopwords.words('spanish')),
+        'english': set(stopwords.words('english'))
+    }
+except Exception as e:
+    print(f"⚠️ Error cargando stopwords: {e}")
+    STOP_WORDS_DICT = {'spanish': set(), 'english': set()}
 
+        
 class TextCleaner(BaseEstimator, TransformerMixin):
     """
     Limpiador de texto personalizado que se integra en el pipeline.
@@ -63,11 +74,6 @@ class TextCleaner(BaseEstimator, TransformerMixin):
     
     def __init__(self, language='spanish'):
         self.language = language
-        try:
-            self.stop_words = set(stopwords.words(self.language))
-        except:
-            print(f"⚠️ No se encontraron stopwords para '{language}', usando inglés")
-            self.stop_words = set(stopwords.words('english'))
     
     def fit(self, X, y=None):
         return self
@@ -76,32 +82,28 @@ class TextCleaner(BaseEstimator, TransformerMixin):
         """
         Limpia el texto: minúsculas, sin caracteres especiales, sin stopwords.
         """
+        # Usamos el diccionario nativo global. 
+        # ¡Cero llamadas a NLTK aquí adentro para evitar el crash de Loky!
+        stop_words = STOP_WORDS_DICT.get(self.language, set())
+            
         if isinstance(X, pd.Series):
-            return X.apply(self._clean_text)
+            return X.apply(lambda t: self._clean_text(t, stop_words))
         elif isinstance(X, pd.DataFrame):
-            # Si es DataFrame, procesar la primera columna
-            return X.iloc[:, 0].apply(self._clean_text)
+            return X.iloc[:, 0].apply(lambda t: self._clean_text(t, stop_words))
         else:
-            # Si es array, convertir a Series
-            return pd.Series(X).apply(self._clean_text)
+            return pd.Series(X).apply(lambda t: self._clean_text(t, stop_words))
     
-    def _clean_text(self, text):
+    def _clean_text(self, text, stop_words):
         """Limpia un texto individual."""
         if not isinstance(text, str):
             return ""
         
-        # Convertir a minúsculas
         text = text.lower()
-        
-        # Eliminar caracteres especiales (mantener solo letras y espacios)
         text = re.sub(r'[^\w\s]', '', text)
-        
-        # Tokenizar y eliminar stopwords
         tokens = text.split()
-        filtered_tokens = [word for word in tokens if word not in self.stop_words]
         
-        return " ".join(filtered_tokens)
-
+        filtered_tokens = [word for word in tokens if word not in stop_words]
+        return " ".join(filtered_tokens)       
 
 class DenseTransformer(BaseEstimator, TransformerMixin):
     """
@@ -148,12 +150,12 @@ def crear_pipeline(modelo_nombre: str, X_train: pd.DataFrame, config: dict):
         if col not in text_cols
     ]
     
-    # Columnas categóricas (object/category) que NO son texto
+    # Columnas categóricas (object/category/str) que NO son texto
     cat_cols = [
-        col for col in X_train.select_dtypes(include=['object', 'category']).columns
+        col for col in X_train.select_dtypes(include=['object', 'category', 'str']).columns
         if col not in text_cols
     ]
-    
+
     print(f"📊 Tipos de columnas detectadas:")
     print(f"   - Numéricas: {len(num_cols)} {num_cols if num_cols else ''}")
     print(f"   - Categóricas: {len(cat_cols)} {cat_cols if cat_cols else ''}")
@@ -271,10 +273,10 @@ def crear_preprocessor_categorical_nb(X_train: pd.DataFrame, config: dict):
     ]
     
     cat_cols = [
-        col for col in X_train.select_dtypes(include=['object', 'category']).columns
+        col for col in X_train.select_dtypes(include=['object', 'category', 'str']).columns
         if col not in text_cols
     ]
-    
+
     transformers = []
     
     # Discretizar columnas numéricas
@@ -433,7 +435,7 @@ def main():
         print(f"🗑️ Columnas eliminadas: {drop_cols}")
     
     # Codificar variable objetivo si es categórica
-    if y.dtype == 'object':
+    if not pd.api.types.is_numeric_dtype(y):
         le = LabelEncoder()
         y = le.fit_transform(y)
         

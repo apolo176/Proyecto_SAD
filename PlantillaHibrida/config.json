@@ -3,7 +3,7 @@
         "random_state": 42,
         "column": "sentiment",
         "text_features": ["review_text"],
-        "drop_features": [],
+        "drop_features": ["review_id"],
         "language": "spanish",
         "data": {
             "train_dev": "data/train.csv",
