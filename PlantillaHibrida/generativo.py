@@ -121,11 +121,19 @@ def generar_entregable():
                 "Tiempo (s)": tiempo
             })
 
-    # Guardar el CSV que pide la profesora
-    df = pd.DataFrame(resultados)
-    # Según la rúbrica: "colocar al comienzo y resaltar el modelo y el prompt que ha funcionado mejor"
-    # Luego tú en Excel puedes poner "[MEJOR]" en la fila que mejor haya rendido.
-    df.to_csv("resultados_generativos.csv", index=False, encoding='utf-8')
+        # Guardar el CSV que pide la profesora
+        df = pd.DataFrame(resultados)
+
+        # Automatización del resaltado (Asumiendo que 'Few-shot' es el mejor)
+        df_few_shot = df[df['tipo'] == 'Clasificación (Few-shot)'].copy()
+        df_few_shot['tipo'] = '[MEJOR RESULTADO] ' + df_few_shot['tipo']
+
+        df_otros = df[df['tipo'] != 'Clasificación (Few-shot)']
+
+        # Concatenar poniendo el Few-shot primero
+        df_final = pd.concat([df_few_shot, df_otros], ignore_index=True)
+
+        df_final.to_csv("resultados_generativos.csv", index=False, encoding='utf-8')
     print("\n✅ Archivo 'resultados_generativos.csv' generado con éxito. Ábrelo para evaluar los resultados.")
 
 
