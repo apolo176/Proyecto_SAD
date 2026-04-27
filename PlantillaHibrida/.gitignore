@@ -1,11 +1,5 @@
 # PlantillaHíbrida - gitignore
 
-# Datos
-data/
-*.csv
-*.xlsx
-*.xls
-
 # Modelos entrenados
 modelos/
 *.pkl
