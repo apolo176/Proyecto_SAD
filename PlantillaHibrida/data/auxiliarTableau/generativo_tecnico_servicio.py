@@ -2,6 +2,7 @@ import argparse
 import pandas as pd
 import ollama
 from tqdm import tqdm
+import os
 
 # ==========================================
 # 1. DEFINICIÓN DE LA PLANTILLA DE PROMPT
@@ -79,15 +80,12 @@ def interactuar_ollama(prompt, modelo="llama3", temperatura=0.0, limite_tokens=5
             'num_predict': limite_tokens
         })
         
-        # Depuración de la cadena de salida para aislar la clasificación categórica
         respuesta_cruda = response['message']['content'].strip()
         
-        # Identificación del primer dígito válido en la secuencia
         for char in respuesta_cruda:
             if char in ['0', '1', '2']:
                 return int(char)
         
-        # Retorna -1 si el modelo genera una alucinación u omite la clase requerida
         return -1 
         
     except Exception as e:
@@ -98,84 +96,69 @@ def interactuar_ollama(prompt, modelo="llama3", temperatura=0.0, limite_tokens=5
 # 3. PROCESAMIENTO DEL CONJUNTO DE DATOS
 # ==========================================
 
-def clasificar_dataset(ruta_entrada, ruta_salida, columna_texto, modelo_base):
+def clasificar_dataset(ruta_entrada, ruta_salida, columna_texto, modelo_base, rango_filas):
     """
-    Lee el conjunto de datos, itera sobre los registros aplicando el modelo de 
-    clasificación especificado y almacena los resultados en un nuevo archivo en formato CSV.
+    Procesa una ventana específica de registros sin descartar el resto del conjunto de datos.
+    Permite la actualización incremental de la columna 'tipo_review'.
     """
-    print(f"Iniciando el proceso de clasificación de texto empleando el modelo '{modelo_base}'...")
+    print(f"Iniciando el proceso de clasificación empleando el modelo '{modelo_base}'...")
 
-    # Carga de los datos en memoria
     try:
         df = pd.read_csv(ruta_entrada)
-    except FileNotFoundError:
-        print(f"Error crítico: No se ha localizado el archivo '{ruta_entrada}'. Verifique la ruta proporcionada.")
-        return
     except Exception as e:
         print(f"Error crítico al leer el archivo de entrada: {e}")
         return
 
     if columna_texto not in df.columns:
-        print(f"Error crítico: La columna '{columna_texto}' no existe en el conjunto de datos provisto.")
+        print(f"Error crítico: La columna '{columna_texto}' no existe en el archivo.")
         return
 
-    clasificaciones = []
+    # Inicialización de la columna de resultados si no está presente en el archivo de origen
+    if 'tipo_review' not in df.columns:
+        df['tipo_review'] = -1  # Valor por defecto para registros no procesados
 
-    # Iteración y clasificación secuencial de cada registro
-    for texto in tqdm(df[columna_texto].astype(str), desc="Procesando registros"):
+    # Determinación de los índices de la ventana de acción
+    if rango_filas:
+        try:
+            inicio, fin = map(int, rango_filas.split('-'))
+            # Validación de límites para evitar desbordamiento de índice
+            fin = min(fin, len(df))
+            indices_objetivo = range(inicio, fin)
+            print(f"Ventana de acción definida: índices {inicio} a {fin-1} ({len(indices_objetivo)} registros).")
+        except ValueError:
+            print("Error: Formato de rango inválido. Use 'inicio-fin'.")
+            return
+    else:
+        indices_objetivo = df.index
+        print(f"Procesando la totalidad de los registros ({len(df)} filas).")
+
+    # Bucle de procesamiento selectivo
+    for i in tqdm(indices_objetivo, desc="Clasificando"):
+        texto = str(df.at[i, columna_texto])
         prompt_final = PROMPT_CLASIFICACION_REVIEWS.format(texto=texto)
         categoria = interactuar_ollama(prompt_final, modelo=modelo_base)
-        clasificaciones.append(categoria)
+        df.at[i, 'tipo_review'] = categoria
 
-    # Integración de los resultados de inferencia en el marco de datos original
-    df['tipo_review'] = clasificaciones
-
-    # Evaluación de la integridad estructural de los resultados
-    errores = df[df['tipo_review'] == -1]
-    if len(errores) > 0:
-        print(f"Advertencia: Se han detectado {len(errores)} registros que no pudieron ser clasificados adecuadamente por el modelo.")
-
-    # Persistencia del conjunto de datos resultante
+    # Persistencia del conjunto de datos completo (incluyendo filas no procesadas)
     try:
         df.to_csv(ruta_salida, index=False, encoding='utf-8')
-        print("Proceso de clasificación finalizado con éxito.")
-        print("\nDistribución de clases resultantes:")
+        print(f"\nProceso finalizado. El archivo completo ha sido guardado en: {ruta_salida}")
+        print("Resumen de la columna 'tipo_review' (incluye registros previos y pendientes):")
         print(df['tipo_review'].value_counts())
-        print(f"\nLos resultados han sido almacenados correctamente en: {ruta_salida}")
     except Exception as e:
-        print(f"Error crítico al intentar guardar el archivo de salida: {e}")
+        print(f"Error crítico al guardar el archivo de salida: {e}")
 
 if __name__ == "__main__":
-    # Configuración del analizador de argumentos de línea de comandos
     parser = argparse.ArgumentParser(
-        description="Herramienta de clasificación de comentarios de usuarios utilizando modelos de lenguaje locales (Ollama)."
+        description="Clasificación incremental de reviews mediante Ollama."
     )
     
-    parser.add_argument(
-        "-i", "--input", 
-        required=True, 
-        help="Ruta absoluta o relativa al archivo CSV de entrada que contiene los textos a analizar."
-    )
-    
-    parser.add_argument(
-        "-o", "--output", 
-        required=True, 
-        help="Ruta absoluta o relativa al archivo CSV de salida para almacenar los resultados del análisis."
-    )
-    
-    parser.add_argument(
-        "-c", "--column", 
-        default="review", 
-        help="Nombre de la variable/columna que contiene el texto en el CSV (valor por defecto: 'review_text')."
-    )
-
-    parser.add_argument(
-        "-m", "--model", 
-        default="llama3", 
-        help="Nombre del modelo de lenguaje de Ollama a utilizar para la inferencia (valor por defecto: 'llama3')."
-    )
+    parser.add_argument("-i", "--input", required=True, help="Archivo CSV de entrada.")
+    parser.add_argument("-o", "--output", required=True, help="Archivo CSV de salida.")
+    parser.add_argument("-c", "--column", default="review", help="Nombre de la columna de texto.")
+    parser.add_argument("-m", "--model", default="llama3", help="Modelo de Ollama.")
+    parser.add_argument("-r", "--range", default=None, help="Rango base 0 (ej. '0-100').")
     
     args = parser.parse_args()
     
-    # Ejecución de la rutina principal con los parámetros provistos
-    clasificar_dataset(args.input, args.output, args.column, args.model)
+    clasificar_dataset(args.input, args.output, args.column, args.model, args.range)
