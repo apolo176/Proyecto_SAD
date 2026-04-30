@@ -342,7 +342,7 @@ def entrenar_modelo(modelo_config: dict, X_train, X_dev, y_train, y_dev, config:
     print(f"   - Cross-validation: {config.get('cv_folds', 5)} folds")
     print(f"   - Scoring: {config.get('scoring', 'f1_macro')}")
     print(f"   - CPUs: {config.get('cpu', -1)}")
-    
+
     # GridSearchCV
     grid_search = GridSearchCV(
         estimator=pipeline,
@@ -350,7 +350,7 @@ def entrenar_modelo(modelo_config: dict, X_train, X_dev, y_train, y_dev, config:
         cv=config.get('cv_folds', 5),
         scoring=config.get('scoring', 'f1_macro'),
         n_jobs=config.get('cpu', -1),
-        verbose=1
+        verbose=3
     )
     
     # Entrenar
@@ -395,7 +395,6 @@ def entrenar_modelo(modelo_config: dict, X_train, X_dev, y_train, y_dev, config:
 
 def main():
     """Función principal."""
-    
     parser = argparse.ArgumentParser(
         description="Entrenamiento de modelos con arquitectura híbrida (modular + pipelines robustos)"
     )
@@ -445,18 +444,46 @@ def main():
             pickle.dump(le, f)
         print(f"💾 LabelEncoder guardado para el target")
         print(f"   Clases: {le.classes_}")
-    
-    # DIVISIÓN TRAIN/DEV - ¡CRÍTICO: ANTES DEL PREPROCESAMIENTO!
-    print(f"\n✂️ Dividiendo datos (Train/Dev)...")
-    test_size = config.get('test_size', 0.25)
-    random_state = config.get('random_state', 42)
-    
-    X_train, X_dev, y_train, y_dev = train_test_split(
-        X, y,
-        test_size=test_size,
-        stratify=y,
-        random_state=random_state
-    )
+
+        # --- NUEVA LÓGICA: DETECCIÓN DE DATASETS PRE-DIVIDIDOS ---
+        # Comprobamos si el usuario ha definido un 'dev_file' explícito en el config.json
+        dev_file = config.get('data', {}).get('dev_file', None)
+
+        if dev_file and os.path.exists(dev_file):
+            print(f"\n🧠 Modo IA Generativa Detectado: Usando splits pre-definidos")
+            print(f"   - Train: Cargado desde {config['data']['train_dev']}")
+            print(f"   - Dev: Cargando desde {dev_file}")
+
+            data_dev = load_data(dev_file)
+
+            # El archivo principal (X, y) ya es puramente Train
+            X_train = X
+            y_train = y
+
+            X_dev = data_dev.drop(columns=[target_col])
+            y_dev = data_dev[target_col]
+
+            # Eliminar drop_features del Dev si las hay
+            if drop_cols:
+                drop_cols_dev = [col for col in drop_cols if col in X_dev.columns]
+                X_dev = X_dev.drop(columns=drop_cols_dev)
+
+            # Si la Y se codificó, codificamos la Y de Dev también
+            if not pd.api.types.is_numeric_dtype(y_dev):
+                y_dev = le.transform(y_dev)
+
+        else:
+            # MODO TRADICIONAL: DIVISIÓN TRAIN/DEV INTERNA
+            print(f"\n✂️ Modo Tradicional: Dividiendo datos (Train/Dev)...")
+            test_size = config.get('test_size', 0.25)
+            random_state = config.get('random_state', 42)
+
+            X_train, X_dev, y_train, y_dev = train_test_split(
+                X, y,
+                test_size=test_size,
+                stratify=y,
+                random_state=random_state
+            )
     
     print(f"   - Train: {X_train.shape[0]} muestras")
     print(f"   - Dev: {X_dev.shape[0]} muestras")

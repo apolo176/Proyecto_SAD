@@ -4,8 +4,10 @@ from tqdm import tqdm
 from sklearn.model_selection import train_test_split
 from funciones import load_config, load_data
 
-PROMPT_PARAFRASIS = """Reescribe la siguiente opinión de una app de citas manteniendo exactamente el MISMO sentimiento, pero usando diferentes palabras y estructuras.
-No añadas introducciones, confirmaciones ni comillas. Genera SOLO la reseña.
+PROMPT_PARAFRASIS = """Reescribe la siguiente opinión de una app de música (Apple Music/Spotify) manteniendo exactamente el MISMO sentimiento, pero usando diferentes palabras y estructuras.
+No añadas introducciones, confirmaciones ni comillas. Genera SOLO la reseña. El idioma a usar tiene que ser el INGLÉS.
+
+REGLA DE FORMATO IMPORTANTE: Debes generar la reseña como un único párrafo continuo. NO utilices saltos de línea, retornos de carro ni viñetas.
 
 Original: '{texto}'
 Reescritura:"""
@@ -37,21 +39,52 @@ def balancear_dataset():
     clase_minoritaria = conteo.idxmin()
     print(f"📊 Clase minoritaria detectada en TRAIN: '{clase_minoritaria}' con {conteo.min()} muestras.")
 
-    # 3. Coger los textos base solo de TRAIN
-    textos_base = df_train[df_train[col_target] == clase_minoritaria][col_texto].head(50).tolist()
+    # 3. Cálculo automático del balanceo
+    conteo = df_train[col_target].value_counts()
+    n_max = conteo.max()  # Cantidad de la clase mayoritaria
+    n_min = conteo.min()  # Cantidad de la clase minoritaria
+    clase_minoritaria = conteo.idxmin()
+
+    # Calculamos la diferencia real
+    diferencia = n_max - n_min
+
+    # --- NUEVA LÓGICA: LÍMITE DE GENERACIÓN ---
+    # Leemos el límite desde config.json (por defecto 200 si no existe)
+    limite_ia = config['generative'].get('n_generations', 200)
+
+    # El objetivo será la diferencia, PERO nunca superando el límite de la IA
+    objetivo_generaciones = min(diferencia, limite_ia)
+
+    print(f"📊 Clase mayoritaria: {n_max} muestras.")
+    print(f"📊 Clase minoritaria: {n_min} muestras.")
+    print(f"⚠️ Diferencia total: {diferencia} reseñas.")
+    print(f"🧠 Objetivo IA: Generar {objetivo_generaciones} reseñas de tipo '{clase_minoritaria}' (Límite aplicado).")
+
+    # Obtenemos los textos base (clase minoritaria) para que la IA los use de referencia
+    textos_referencia = df_train[df_train[col_target] == clase_minoritaria][col_texto].tolist()
 
     nuevas_filas = []
-    print(f"🧠 Generando {len(textos_base)} nuevas opiniones de tipo '{clase_minoritaria}'...")
 
-    for texto in tqdm(textos_base):
-        prompt_final = PROMPT_PARAFRASIS.format(texto=texto)
+    # Usamos un bucle que se repita exactamente 'objetivo_generaciones' veces
+    for i in tqdm(range(objetivo_generaciones), desc="Generando balanceo"):
+        # Elegimos un texto de referencia al azar de los que tenemos
+        import random
+        texto_original = random.choice(textos_referencia)
+
+        prompt_final = PROMPT_PARAFRASIS.format(texto=texto_original)
 
         respuesta = ollama.chat(
             model="llama3",
             messages=[{'role': 'user', 'content': prompt_final}],
             options={'temperature': 0.8, 'num_predict': 100}
         )
-        nueva_review = respuesta['message']['content'].strip()
+        nueva_review = respuesta['message']['content']
+        # --- LIMPIEZA ANTI-CSV-BREAKING ---
+        # 1. Reemplazar saltos de línea reales (\n) y retornos de carro (\r) por un espacio simple
+        nueva_review = nueva_review.replace('\n', ' ').replace('\r', ' ')
+        # 2. Limpiar espacios en blanco sobrantes a los lados
+        nueva_review = nueva_review.strip()
+        # ---------------------------------
 
         nuevas_filas.append({col_texto: nueva_review, col_target: clase_minoritaria})
 

@@ -6,7 +6,10 @@ modelos/
 *.pickle
 
 # Resultados
+<<<<<<< HEAD
 
+=======
+>>>>>>> refs/remotes/origin/main
 output/
 
 # Python

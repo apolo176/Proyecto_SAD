@@ -1482,7 +1482,7 @@ reviewId,review,score,gender,location,date
 1480,App won't open on an Android 12 brand new phone - guess it's designed to work only on Iphone - should say that before wasting time and data downloading - jerks,1,male,"Seoul, South Korea",2023-08-04
 1481,App forces itself open and kills battery,1,male,"Casablanca, Morocco",2023-10-11
 1482,Great app😕😁😃😄,1,female,"Suva, Fiji",2025-09-08
-1483,Nt GD , NVR dwld. 👎🏾 6.3.2025, 8:19am.,1,male
+1483,Nt GD  NVR dwld. 👎🏾,1,male,,2025-03-6
 1484,इस ऐप को ओपन करना ही बड़ा मुश्किल होता है ।,1,male,"San Francisco, United States",2024-09-10
 1485,"Wouldn't expect anything less than apple to release a poor functioning app, app will sometimes stop playing songs on android auto which requires a full force close of the app and a re launch for it to work if this doesn't happen it skips songs and plays few seconds of the next song and the same happens until a force close, considering they are charging 10.99 a month I'll probably move to Spotify instead this isnt a phone issue as it happens on multiple devices I've tested",1,male,"Delhi, India",2023-05-07
 1486,Dolby Atmos or Spatial audio option is not showing. Please fix.,1,male,"Guadalajara, Mexico",2024-09-21
@@ -1579,7 +1579,7 @@ reviewId,review,score,gender,location,date
 1577,App won't play my music,1,female,"Hobart, Australia",2025-11-05
 1578,Still cannot login when using security keys,1,male,"Dakar, Senegal",2023-10-26
 1579,Where is my paid for music?? Why do I need to pay for a subscription to listen to the music I've already paid for on your platform??????? Why can't I access my paid library??????,1,male,"Guadalajara, Mexico",2025-02-15
-1580,Slows down my phone significantly. Never had, - lagg - screen that doesnt move. - music doesnt play smooth - when opening anything else while playing music phone trips so bad. Deleted app. Result, smooth interface and no issue. Apple is trying to do to android users what they have been doing to their apple users for years.,1,male
+1580,Slows down my phone significantly. Never had - lagg - screen that doesnt move. - music doesnt play smooth - when opening anything else while playing music phone trips so bad. Deleted app. Result smooth interface and no issue. Apple is trying to do to android users what they have been doing to their apple users for years.,1,male
 1581,Very unreliable!,1,male,"Calgary, Canada",2024-05-06
 1582,Being told to install to cancel apple TV. Can't sign-in because verification code not being sent to any device it says it'll be sent to. Useless.,1,male,"Prague, Czech Republic",2022-12-24
 1583,"I do not recommend! We paid for the family plan and are unable to access it. We called to fix the problem and we are still unable to access the library to the account. All it says is ""Choose your plan"" where our library should be. My family is very upset. They relied on this app!",1,male,"Mombasa, Kenya",2023-10-02
@@ -1917,7 +1917,7 @@ reviewId,review,score,gender,location,date
 1915,"App offered me a 3 month trial, I accepted the trial and was immediately charged!!! What a scam, I'll never get near another Apple product.",1,male,"Arequipa, Peru",2025-05-08
 1916,Never opened.,1,male,"Santa Cruz, Bolivia",2025-05-28
 1917,Can't play Christmas wedding by!!!!Jaheim 😕,1,male,"Brasília, Brazil",2025-07-20
-1918,cant add my music to the library from my flash drive and im not paying for a subscription to do so . this sucks,,1,male,"Bogotá, Colombia"
+1918,cant add my music to the library from my flash drive and im not paying for a subscription to do so . this sucks,1,male,"Bogotá, Colombia"
 1919,Doesnt work. Lets me log in with my password. Then go to subscribe and it claims my password is wrong. Oh but it will let let me log into my apple music. I wanted to try out apple music as a new customer maybe switching from spotify. Wasted too much time on this. I give up. I have friends that are Apple elitist who claimed that apple is the very best of everything they do and that there are no bugs no problems and that everything works perfect seamlessly. Well that's just BS,1,male,"Santiago, Chile",2025-06-05
 1920,Don't like it because it doesn't have all the music I like to listen to when I'm playing on xbox like Spotify dose and it crashes a lot on xbox,1,male,"Los Angeles, United States",2025-01-02
 1921,when I hit play next to the one song I wanna play it adds like 7 songs of different artist I've never even listened to. something weird is going on.,1,male,"Bangalore, India",2023-06-23
@@ -2804,7 +2804,7 @@ reviewId,review,score,gender,location,date
 2802,This app is a big disgrace for Apple. I am really disappointed. It didn't run all smoothly at all including some serious code-loaded error messages when I try to download music. It also needs internet connection for offline music. Shame on you Apple shame on you!,1,male,"Abuja, Nigeria",2023-10-06
 2803,"Removing songs doesn't work, when I search song and remove from playlist it says song removed but when I search again it appears again and doesn't remove it from the playlist, I tried so many times but still the same issue",1,female,"Perth, Australia",2025-09-27
 2804,I cannot believe i spent my data and Time on this rubbish even audio mack is better so useless and UN useable😑😑😐,1,female,"Port Moresby, Papua New Guinea",2025-10-13
-2805,Wouldn't use the music library on my phone, it wants me to spend ten bucks a month to get it from the cloud instead. Heck to the no.,1,male,"Calgary, Canada"
+2805,Wouldn't use the music library on my phone it wants me to spend ten bucks a month to get it from the cloud instead. Heck to the no.,1,male,"Calgary, Canada"
 2806,Voice control in Android Auto is no longer capable of playing a specific song. Only works if asked to play an artist. Previously worked as intended,1,male,"Brussels, Belgium",2023-03-07
 2807,The interface update is very slow. The algorithm is terrible. It could be more from a big company like Apple. Disappointed!!!,1,male,"Rome, Italy",2023-03-19
 2808,Everytime about a few days before subscription all my music gets wiped and I'm still logged into my account which I paid for premium but it keeps showing me different plans that I've paid for already and no matter how many times I put in my password it keeps telling me to put in my password it's annoying pls deal with this quickly,1,male,"Phoenix, United States",2024-12-08
@@ -5688,7 +5688,7 @@ reviewId,review,score,gender,location,date
 5686,You can't transfer over your iTunes library (aka music that you own) without having to pay a subscription. F that.,1,male,"Seoul, South Korea",2023-07-17
 5687,"Sound quality great, but library management is absolutely awful. Albums from my local computer library get mistagged, and album art is almost always wrong. E.g., Live Dead is in Aoxomoa Extras. 5/8/77 gets merged to a Dick's Picks from 76. Phish Live Bait 13 shows up under Rift etc. Really wanted to make this work, since modern car stereos don't work w/ iPod Classics, but it just won't. Only thing that works is Playlists. Also, in Android Auto, you can only search artists up to P; Q-Z greyed out",1,female,"Buenos Aires, Argentina",2025-05-10
 5688,Unable to play purchased music without a paid monthly subscription.,1,female,"Suva, Fiji",2025-09-24
-5689,The android version is a money grubbing app. I have copied my Apple iTunes collection into my phone which has 1TB of space. Installed Apple music app, the first thing it asks is for a subscription. It does NOT attempt to look for my music collection locally. All the other music apps like Audiomack or Samsung Music searches for music locally. I have an iPhone 13Pro Max with 1TB. Apple Music app behaves differently on this device Is it because I synced it with my laptop?,1,female,"Brasília, Brazil"
+5689,The android version is a money grubbing app. I have copied my Apple iTunes collection into my phone which has 1TB of space. Installed Apple music app the first thing it asks is for a subscription. It does NOT attempt to look for my music collection locally. All the other music apps like Audiomack or Samsung Music searches for music locally. I have an iPhone 13Pro Max with 1TB. Apple Music app behaves differently on this device Is it because I synced it with my laptop?,1,female,"Brasília, Brazil"
 5690,Does not show my music,1,male,"Calgary, Canada",2024-10-16
 5691,Terrible Terrible Terrible,1,female,"Santiago, Chile",2025-08-04
 5692,Nice apps easy to uninstall,2,male,"Casablanca, Morocco",2022-02-12
@@ -6602,7 +6602,7 @@ android.",2,male,"Houston, United States",2022-12-23
 6597,"Coming from an Android user, no AI personally written review. I have been using this app for the past half year, and I can at least give this a decent review. I can safely say that this is a cost-effective way to save on a family plan compared to spotify. Unlike Spotify, though, Apple music will sign you out and make it harder to sign back in and explicitly tell you that your apple ID is locked and support will not speed the process. If I had known about this, I would have stayed with Spotify.",2,male,"Vancouver, Canada",2023-01-20
 6598,trash,2,female,"Nadi, Fiji",2023-10-24
 6599,"Awful, I pay for nothing, bored design,",2,female,"Sydney, Australia",2024-02-05
-6600,As usual with anything Apple, unless your part of the Apple universe (iPhone or MAC etc) expect to spend hours with support getting anything to work!,2,male,"Montreal, Canada"
+6600,As usual with anything Apple unless your part of the Apple universe (iPhone or MAC etc) expect to spend hours with support getting anything to work!,2,male,"Montreal, Canada"
 6601,WTH have they done with the loop back through play list button gone? Not neuro spicy friendly at all Disappointing. So many things I expect to be available are missing. You can't delete a song from a playlist. You can't put an album or playlist on loop. Songs and albums just randomly disappear or become greyed out.,2,male,"Bali, Indonesia",2021-09-05
 6602,"Now my app keeps enabling the ""Autoplay similar music"" feature after every song/album DESPITE clicking off the infinity symbol EVERY time. Please patch this",2,male,"Mumbai, India",2021-08-11
 6603,can not create id,2,male,"Jerusalem, Israel",2021-06-21
@@ -6621,7 +6621,6 @@ android.",2,male,"Houston, United States",2022-12-23
 6616,Ithing that this app is good,2,male,"Boston, United States",2022-08-28
 6617,"No sound quality on Android users, poor quality sound and very low quality sound, proper download option not available, not showing saved playlists",2,male,"Dallas, United States",2022-09-30
 6618,"It keeps prompting me to start 3 month free trial. I had already DONE that! Gave them all my credit card information. I haven't been able to hear ONE song! I don't want to be charged for something that I can't even use! So, how do I contact them to get off their ""free 3 month trial""??",2,male,"Riyadh, Saudi Arabia",2021-09-30
-6619,I have this free for 3 months. Will not be renewing at the end of that. Pros- 1.Sounds great, 2. Has some music by my favourite artist that is only available elsewhere on Spotify, 3. Has lyrics for high % of music compared to other sites, 4. IT'S NOT AMAZON MUSIC. Cons 1. Drains battery power v quickly, 2. Crashes frequently during the day
 6620,"I used to have a iphone and decided to move to Android, I kept apple music as I used to own a iphone and liked the features, Doby Atmos, and auto downloading. The Android version has Doby Atmos but no auto downloading. Please bring this feature.",2,male,"Bogotá, Colombia",2023-05-23
 6621,Iddaa sawaaaasx5v c4sg as c da ev sc7es,2,male,"Mexico City, Mexico",2023-04-04
 6622,It's always logging me out,2,male,"Brussels, Belgium",2021-05-05
@@ -7826,7 +7825,7 @@ android.",2,male,"Houston, United States",2022-12-23
 7821,"audio quality is top notch, could get better in recommendations. the search isn't the smoothest. on android it lags pretty frequently especially if you're building a playlist and editing it.",3,male,"Montreal, Canada",2020-09-08
 7822,The app is wonderful on iPhone. when using it on Android it looks worse and doesn't work as smoothly. for most Apple apps that have made their way to the play store it seems Apple purposely make them worse to try and get you to want an iPhone.,3,male,"Taipei, Taiwan",2019-09-26
 7823,Don't open fast,3,male,"Cancun, Mexico",2020-05-21
-7824,I just want to hear some music now and then. This thing is omnipresent and annoying. I want to put it to sleep when not in use, impossible without gyrations.,3,male,"Jacksonville, United States"
+7824,I just want to hear some music now and then. This thing is omnipresent and annoying. I want to put it to sleep when not in use impossible without gyrations.,3,male,"Jacksonville, United States"
 7825,This app isn't intuitive when queuing or playing music,3,male,"Guadalajara, Mexico",2021-05-05
 7826,"Can't listen to my downloaded music (saved to SD card) whilst connected to the internet -over wifi. The songs stutter and glitch, quite unpleasant, as if its redownloading the song currently playing? I see other reviews saying the same. Zero problems when going offline though.",3,female,"Montevideo, Uruguay",2021-09-06
 7827,Ill download some songs then get deleted for no reason like e40 and too short slide thru you cant play it no more,3,male,"San Jose, United States",2020-10-07
@@ -8692,7 +8691,7 @@ killed every time I try to change the EQ while listening to music. Meh...",4,mal
 8685,Great sound quality 💯,4,male,"Boston, United States",2018-11-22
 8686,not yet optimized,4,male,"Dublin, Ireland",2017-08-03
 8687,it's very efficient and works well,4,male,"Lagos, Nigeria",2018-06-03
-8688,Me gusta el sonido y la ecualización, no le doy las 5 estrellas porque las recomendaciones no son tan buenas o el hecho de que no puedo controlar la música de cualquier otro dispositivo que no sea apple. En ese punto sigue por debajo de Spotify.,4,male,"New York, United States"
+8688,Me gusta el sonido y la ecualización no le doy las 5 estrellas porque las recomendaciones no son tan buenas o el hecho de que no puedo controlar la música de cualquier otro dispositivo que no sea apple. En ese punto sigue por debajo de Spotify.,4,male,"New York, United States"
 8689,it good,4,male,"Manila, Philippines",2017-12-20
 8690,"My experience is best for quality of sound,and availability of some Indian regional not good.....",4,male,"San Jose, United States",2019-05-25
 8691,"Great, I'd give it 5 stars but there's certain albums that are not on this app.",4,male,"Lisbon, Portugal",2017-08-19
@@ -10071,7 +10070,7 @@ killed every time I try to change the EQ while listening to music. Meh...",4,mal
 10064,after spotify this feels like heaven,5,male,"Kampala, Uganda",2016-08-15
 10065,Ok,5,male,"Tijuana, Mexico",2017-04-09
 10066,TUMEKE BRUHH 😎,5,female,"Valparaíso, Chile",2017-11-05
-10067,minimal quality < , ),5,female,"São Paulo, Brazil"
+10067,minimal quality <  ),5,female,"São Paulo, Brazil"
 10068,Amazing 👏 ❤️,5,male,"Monterrey, Mexico",2016-11-17
 10069,way better than spotify. easy to use,5,male,"Jeddah, Saudi Arabia",2016-01-12
 10070,nice,5,male,"Busan, South Korea",2016-04-06
@@ -10163,7 +10162,7 @@ killed every time I try to change the EQ while listening to music. Meh...",4,mal
 10156,Spotify ain't got nothing on Apple Music.,5,male,"Jeddah, Saudi Arabia",2016-01-16
 10157,I love it,5,male,"Quebec City, Canada",2016-10-23
 10158,Music 👍,5,male,"Tunis, Tunisia",2016-06-22
-10159,ORIN EWI NI ODARAJU 🏡🏡🏡 OKUN FUN IMO ATI OYE 🏭🏭🏭PELU OGBON ATATA⛪⛪⛪:':::'22,:':':30:mint ago NIGRRIA SEE TTSDUTION 🏤🏫🏣🏩🗼🏯---)(':',5,female,"Rosario, Argentina"
+10159,ORIN EWI NI ODARAJU 🏡🏡🏡 OKUN FUN IMO ATI OYE 🏭🏭🏭PELU OGBON ATATA⛪⛪⛪:':::'22:':':30:mint ago NIGRRIA SEE TTSDUTION 🏤🏫🏣🏩🗼🏯---)(':',5,female,"Rosario, Argentina"
 10160,Best,5,male,"Paris, France",2015-07-21
 10161,I am team android... but Apple Music hit different,5,male,"Jacksonville, United States",2016-10-07
 10162,🎧🎶☕🤟😉,5,male,"Lagos, Nigeria",2016-05-09
@@ -12701,7 +12700,7 @@ killed every time I try to change the EQ while listening to music. Meh...",4,mal
 12694,Wow bombon,5,male,"Boston, United States",2016-09-17
 12695,Great app,5,male,"Guadalajara, Mexico",2017-02-24
 12696,Very good music app,5,male,"Tijuana, Mexico",2017-04-05
-12697,Good job apple. I like your lossless option ,) thx for high quality music. Bye bye spotify,5,female,"Cali, Colombia"
+12697,Good job apple. I like your lossless option ) thx for high quality music. Bye bye spotify,5,female,"Cali, Colombia"
 12698,Excellent,5,male,"Taipei, Taiwan",2015-12-08
 12699,Bbrixbb,5,female,"São Paulo, Brazil",2017-11-28
 12700,Goo D,5,male,"Monterrey, Mexico",2017-02-20
@@ -13503,7 +13502,7 @@ killed every time I try to change the EQ while listening to music. Meh...",4,mal
 13496,Yippee!,5,female,"Guadalajara, Mexico",2017-08-22
 13497,Great music player,5,male,"Valencia, Spain",2015-11-19
 13498,Overall I like apple music because there's no ads like Spotify so it gets a 5 star,5,female,"Philadelphia, United States",2017-09-05
-13499,What an audio quality, loved it.,5,female,"Vancouver, Canada"
+13499,What an audio quality loved it.,5,female,"Vancouver, Canada"
 13500,I have an Android device and I still use Apple music for my music. love it,5,female,"Montevideo, Uruguay",2017-12-12
 13501,The audio quality is just breathtaking 🔥.,5,male,"Valencia, Spain",2015-11-19
 13502,Fab,5,male,"Vancouver, Canada",2017-02-22
@@ -14121,7 +14120,7 @@ killed every time I try to change the EQ while listening to music. Meh...",4,mal
 14114,Need a TV support app...,5,female,"Guadalajara, Mexico",2017-06-08
 14115,Excellent has more songs than my previous music app had! 😀,5,female,"Nadi, Fiji",2018-05-14
 14116,Can't add songs to library since update,5,female,"Caracas, Venezuela",2017-12-24
-14117,best music app EVERRRRRRE!!!!,@,5,female,"Phoenix, United States"
+14117,best music app EVERRRRRRE!!!!@,5,female,"Phoenix, United States"
 14118,"Looking for the best listening experience?, apple music is your home of unlimited melody and rhythm, for every mood, happy or feeling down, just a tap helps effectively.",5,male,"Helsinki, Finland",2015-10-22
 14119,Best music experience only on apple music (Lossless music only),5,male,"Vienna, Austria",2015-09-20
 14120,so glad to have my apple music collection still available even though I've switched to a Samsung. thank you!!!,5,female,"Bogotá, Colombia",2017-12-25
@@ -14382,7 +14381,7 @@ killed every time I try to change the EQ while listening to music. Meh...",4,mal
 14375,Lossless is just sick!,5,female,"Austin, United States",2017-10-22
 14376,audio quality is like in another level and ot is way better then spotify. I just love this app,5,male,"Lagos, Nigeria",2016-05-02
 14377,Even if it it's an old song but The quality remains the same.,5,female,"San Antonio, United States",2017-09-07
-14378,My favorite music app best sounding song for sure lossless code love it,,5,male,"Austin, United States"
+14378,My favorite music app best sounding song for sure lossless code love it,5,male,"Austin, United States"
 14379,"Quality sound,easy to use simple as that",5,female,"Perth, Australia",2018-04-11
 14380,works the same as iPhone just slower like a typical android,5,male,"Jacksonville, United States",2017-04-29
 14381,"Resisted Apple for years, decades! and they've resisted me, but now they're all inclusive for everyone, I love Apple music on my Google Pixel 9 Android awesomeness!",5,male,"Tel Aviv, Israel",2016-03-27
