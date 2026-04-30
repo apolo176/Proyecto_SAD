@@ -23,10 +23,10 @@ def load_config(config_file: str, sections: list = None) -> dict:
         with open(config_file, 'r', encoding='utf-8') as f:
             config_completa = json.load(f)
     except FileNotFoundError:
-        print(f"❌ Error: No se encontró el archivo {config_file}")
+        print(f"Error: No se encontró el archivo {config_file}")
         sys.exit(1)
     except json.JSONDecodeError as e:
-        print(f"❌ Error al parsear JSON: {e}")
+        print(f"Error al parsear JSON: {e}")
         sys.exit(1)
     
     if sections is None:
@@ -89,10 +89,10 @@ def load_data(filepath: str, encoding: str = 'utf-8') -> pd.DataFrame:
     try:
         data = pd.read_csv(filepath, encoding=encoding)
     except UnicodeDecodeError:
-        print(f"⚠️ Intentando con encoding 'latin1'...")
+        print(f"Intentando con encoding 'latin1'...")
         data = pd.read_csv(filepath, encoding='latin1')
     except FileNotFoundError:
-        print(f"❌ Error: No se encontró el archivo {filepath}")
+        print(f"Error: No se encontró el archivo {filepath}")
         sys.exit(1)
     
     # Eliminar columnas 'Unnamed' que a veces genera pandas

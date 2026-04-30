@@ -6,7 +6,7 @@ modelos/
 *.pickle
 
 # Resultados
-resultados/
+
 output/
 
 # Python

@@ -10,6 +10,22 @@
             "test": "data/test.csv"
         }
     },
+    "clustering": {
+         "num_topics_range": {
+            "min": 2,
+            "max_positivo": 7,
+            "max_negativo": 7
+        },
+        "name": "AppleMusic",
+        "passes": 6,
+        "coherence_metric": "c_v",
+        "output_dir": "resultados/clustering",
+        "text_col": "review",
+        "data": {
+            "train_dev": "data/AppleMusic.csv",
+            "test": "data/test.csv"
+        }
+    },
     "preprocessing": {
         "test_size": 0.25,
         "text_process": "tf_idf",
