@@ -42,3 +42,10 @@ nltk_data/
 
 # Logs
 *.log
+
+# Pruebas de Tableau
+*TecSer*
+*tecser*
+generativo_tecnico_servicio.py
+separador_csv_años.py
+*.twb
