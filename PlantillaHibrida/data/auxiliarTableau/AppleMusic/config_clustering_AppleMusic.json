@@ -1,0 +1,100 @@
+{
+    "general": {
+        "random_state": 42,
+        "column": "sentiment",
+        "text_features": ["review"],
+        "drop_features": ["reviewId", "score", "location", "date", "App", "gender"],
+        "language": "english",
+        "data": {
+            "train_dev": "data/train.csv",
+            "dev_file": null,
+            "test": "data/test.csv"
+        }
+    },
+    "clustering": {
+         "num_topics_range": {
+            "min": 2,
+            "max_positivo": 7,
+            "max_negativo": 7
+        },
+        "name": "AppleMusic",
+        "passes": 6,
+        "coherence_metric": "c_v",
+        "output_dir": "data/auxiliarTableau/AppleMusic",
+        "text_col": "review",
+        "data": {
+            "train_dev": "data/auxiliarTableau/AppleMusic/AppleMusic_Limpio-2015-2018.csv",
+            "test": "data/test.csv"
+        }
+    },
+    "preprocessing": {
+        "test_size": 0.25,
+        "text_process": "tf_idf",
+        "sampling": "oversampling",
+        "impute_strategy_numeric": "mean",
+        "impute_strategy_categorical": "most_frequent",
+        "scaling": "minmax"
+    },
+    "train": {
+        "cpu": 6,
+        "scoring": "f1_macro",
+        "cv_folds": 5,
+        "modelos": [
+            {
+                "knn": true,
+                "modelo_output": "modelos/knn_BestModel.pkl",
+                "parametros": {
+                    "clasificador__n_neighbors": {"min": 1, "max": 15, "step": 2},
+                    "clasificador__weights": ["uniform", "distance"],
+                    "clasificador__metric": ["euclidean", "manhattan"]
+                }
+            },
+            {
+                "decision_tree": false,
+                "modelo_output": "modelos/decision_tree_BestModel.pkl",
+                "parametros": {
+                    "clasificador__criterion": ["gini", "entropy"],
+                    "clasificador__max_depth": {"min": 5, "max": 20, "step": 5},
+                    "clasificador__min_samples_split": {"min": 2, "max": 10, "step": 2},
+                    "clasificador__min_samples_leaf": {"min": 1, "max": 5, "step": 1}
+                }
+            },
+            {
+                "random_forest": false,
+                "modelo_output": "modelos/random_forest_BestModel.pkl",
+                "parametros": {
+                    "clasificador__n_estimators": {"min": 50, "max": 250, "step": 50},
+                    "clasificador__max_depth": [null, 10, 20],
+                    "clasificador__min_samples_split": {"min": 2, "max": 10, "step": 2},
+                    "clasificador__min_samples_leaf": {"min": 1, "max": 5, "step": 1},
+                    "clasificador__bootstrap": [true, false]
+                }
+            },
+            {
+                "multinomial_nb": false,
+                "modelo_output": "modelos/multinomial_nb_BestModel.pkl",
+                "parametros": {
+                    "clasificador__alpha": [0.01, 0.1, 0.5, 1.0, 5.0, 10.0],
+                    "clasificador__fit_prior": [true, false]
+                }
+            },
+            {
+                "categorical_nb": false,
+                "modelo_output": "modelos/categorical_nb_BestModel.pkl",
+                "parametros": {
+                    "preprocessor__num__n_bins": [3, 5, 8],
+                    "preprocessor__num__strategy": ["uniform", "quantile"],
+                    "clasificador__alpha": [0.1, 0.5, 1.0, 2.0],
+                    "clasificador__min_categories": [100]
+                }
+            }
+        ]
+    },
+    "test": {
+        "metricas_output": "resultados/metricas_modelos.csv",
+        "predicciones_output": "resultados/predicciones_test.csv"
+    },
+    "generative": {
+        "n_generations": 200
+    }
+}
