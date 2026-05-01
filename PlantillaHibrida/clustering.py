@@ -287,6 +287,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-c','--config',help='Archivo de configuración', default='config.json', type=str)
     args = parser.parse_args()
+    
     # 1. Config
     full_config = load_config(args.config)
     cluster_cfg = full_config['clustering']
@@ -318,21 +319,34 @@ def main():
             print(f"Error: columna '{sent_col}' ni 'score' encontradas.")
             sys.exit(1)
 
-    # 4. Split by sentiment
+    # 4. Aplicar filtros ANTES de dividir
+    df = df[df[col_texto].str.split().str.len() >= 8] 
+    df = df[~df[col_texto].str.contains(r'[^\x00-\x7F]', regex=True, na=False)]
+    print(f"Reviews tras filtro de idioma y longitud: {len(df)}")  
+
+    # 5. Split by sentiment
     df_pos = df[df[sent_col] == 'positivo']
     df_neg = df[df[sent_col] == 'negativo']
+    
     sample = df_pos[df_pos[col_texto].str.contains('problem', case=False)]
     print(f"Reviews score 5 con 'problem': {len(sample)}")
-    print(sample[col_texto].head(3).to_string())
-    df = df[df[col_texto].str.split().str.len() >= 8] 
+    if not sample.empty:
+        print(sample[col_texto].head(3).to_string())
 
-    df = df[~df[col_texto].str.contains(r'[^\x00-\x7F]', regex=True, na=False)]
-    print(f"Reviews tras filtro de idioma: {len(df)}")  
-    
-    res_pos = analizar_topics_gensim(df_pos, col_texto, 'positivo', idioma, cluster_cfg)
-    res_neg = analizar_topics_gensim(df_neg, col_texto, 'negativo', idioma, cluster_cfg)
+    # 6. Analizar topics si no están vacíos
+    if not df_pos.empty:
+        res_pos = analizar_topics_gensim(df_pos, col_texto, 'positivo', idioma, cluster_cfg)
+    else:
+        print("No hay reviews positivas")
+        res_pos = pd.DataFrame()  # Evita que el pd.concat posterior falle
 
-    # 6. Export for Tableau
+    if not df_neg.empty:
+        res_neg = analizar_topics_gensim(df_neg, col_texto, 'negativo', idioma, cluster_cfg)
+    else:
+        print("No hay reviews negativas")
+        res_neg = pd.DataFrame()  # Evita que el pd.concat posterior falle
+
+    # 7. Export for Tableau
     final_df = pd.concat([res_pos, res_neg], ignore_index=True)
     output_path = f"{cluster_cfg['output_dir']}/resultados_tableau_{cluster_cfg['name']}.csv"
 
