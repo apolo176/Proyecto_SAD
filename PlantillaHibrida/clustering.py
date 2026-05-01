@@ -17,6 +17,7 @@ from gensim.models.coherencemodel import CoherenceModel
 from sklearn.base import BaseEstimator, TransformerMixin
 from langdetect import detect, LangDetectException
 import unicodedata
+import argparse
 
 from funciones import load_config, load_data, print_section_header
 
@@ -282,9 +283,12 @@ def analizar_topics_gensim(df, col_texto: str, polaridad: str,
 # ---------------------------------------------------------------------------
 def main():
     print_section_header("LÍDER CLUSTERING: GENSIM LDA", char="═")
-
+    
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-c','--config',help='Archivo de configuración', default='config.json', type=str)
+    args = parser.parse_args()
     # 1. Config
-    full_config = load_config('config.json')
+    full_config = load_config(args.config)
     cluster_cfg = full_config['clustering']
     gen_cfg = full_config['general']
 
