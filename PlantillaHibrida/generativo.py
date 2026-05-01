@@ -164,7 +164,7 @@ def generar_entregable():
     )
 
     # 3. Tomar una muestra ESTRATIFICADA de DEV para evaluar
-    # Usamos 150 muestras para que no tarde horas, pero manteniendo la proporción de clases
+    # Usamos en este caso 150 muestras para que no tarde horas, pero manteniendo la proporción de clases
     _, muestra_dev, _, y_muestra_dev = train_test_split(
         X_dev, y_dev,
         test_size=150,
@@ -184,7 +184,7 @@ def generar_entregable():
         {"id": "One-shot (Malo)", "plantilla": PROMPT_ONE_SHOT_MALO, "tokens": 20, "mapear": False},
         {"id": "One-shot (Bueno)", "plantilla": PROMPT_ONE_SHOT_BUENO, "tokens": 1, "mapear": True},
         {"id": "One-shot (Mejorado)", "plantilla": PROMPT_ONE_SHOT_MEJORADO, "tokens": 1, "mapear": True},
-        {"id": "Few-shot (Rol Adolescente)", "plantilla": PROMPT_FEW_SHOT_MALO, "tokens": 15, "mapear": False},
+        {"id": "Few-shot (Malo)", "plantilla": PROMPT_FEW_SHOT_MALO, "tokens": 15, "mapear": False},
         {"id": "Few-shot (Bueno)", "plantilla": PROMPT_FEW_SHOT_BUENO, "tokens": 1, "mapear": True},
         {"id": "Few-shot (Mejorado)", "plantilla": PROMPT_FEW_SHOT_MEJORADO, "tokens": 1, "mapear": True}
     ]
@@ -202,12 +202,12 @@ def generar_entregable():
         preds_este_experimento = []
         detalles_paso = []
 
-        for texto in tqdm(textos_prueba, desc="Procesando"):
+        for texto in tqdm(textos_prueba, desc="Procesando contra Dev"):
             prompt_final = exp['plantilla'].format(texto=texto)
             salida_raw = interactuar_ollama(prompt_final, modelo_base, 0.0, exp['tokens'])
 
             if exp['mapear']:
-                # Limpieza robusta: tomamos el primer caracter válido
+                # Limpieza robusta: tomamos el primer caracter válido, aunque se haya limitado con tokens la salida de Ollama.
                 letra_limpia = salida_raw.upper().strip().replace(".", "").replace(":", "")[0:1] if salida_raw else ""
                 salida_final = mapa_sentimientos.get(letra_limpia, f"ERROR_DE_MAPEO (Raw: {salida_raw})")
                 preds_este_experimento.append(salida_final)
