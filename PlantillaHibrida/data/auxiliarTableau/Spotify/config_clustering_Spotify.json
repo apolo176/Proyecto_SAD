@@ -17,14 +17,14 @@
             "max_positivo": 7,
             "max_negativo": 7
         },
-        "name": "AppleMusic",
+        "name": "Spotify",
         "passes": 6,
         "coherence_metric": "c_v",
-        "output_dir": "data/auxiliarTableau/Spotify",
+        "output_dir": "Spotify",
         "text_col": "review",
         "data": {
-            "train_dev": "data/auxiliarTableau/Spotify/Spotify_Limpio-2023-2025.csv",
-            "test": "data/test.csv"
+            "train_dev": "Spotify/Spotify_Limpio-2008-2014.csv",
+            "test": "../test.csv"
         }
     },
     "preprocessing": {
