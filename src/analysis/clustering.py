@@ -354,12 +354,19 @@ def main():
     for c in ('location', 'gender', 'date'):
         if c in final_df.columns:
             cols_export.append(c)
+    
+    # Extraemos un csv con los tópicos
+    topic_path = f"{cluster_cfg['output_dir']}/topicos_{cluster_cfg['name']}.csv"
+    df_topics = final_df[['Polaridad_Clustering', 'Topic_ID', 'Palabras_Clave']].drop_duplicates()
+    df_topics = df_topics.sort_values(by=['Polaridad_Clustering', 'Topic_ID']).reset_index(drop=True)
+    df_topics.to_csv(topic_path, index=False)
 
     os.makedirs(cluster_cfg['output_dir'], exist_ok=True)
     final_df[cols_export].to_csv(output_path, index=False)
 
     print_section_header("PROCESO COMPLETADO", char="═")
-    print(f"Resultados guardados en: {output_path}")
+    print(f"Resultados del clustering guardados en: {output_path}")
+    print(f"Resumen de tópicos guardado en: {topic_path}")
 
 
 if __name__ == '__main__':
