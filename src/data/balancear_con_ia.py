@@ -1,3 +1,15 @@
+#!/usr/bin/env python3
+"""
+Script de balanceo de datos generativo mediante Inteligencia Artificial.
+Realiza oversampling de la clase minoritaria generando reseñas sintéticas (paráfrasis) utilizando Ollama.
+
+CARACTERÍSTICAS CLAVE:
+- División Train/Dev ANTES del oversampling para garantizar la ausencia total de Data Leakage, y aplicar la generación para oversampling solamente para el Train.
+- Generación de datos sintéticos que mantienen el sentimiento original pero con variaciones léxicas y estructurales.
+- Cálculo automático de la brecha entre clases y aplicación de límites seguros de generación basados en config.json.
+- Creación de un conjunto de entrenamiento balanceado por IA, exportando el conjunto Dev completamente intacto.
+"""
+
 import pandas as pd
 import ollama
 from tqdm import tqdm

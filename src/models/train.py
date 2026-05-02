@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Script de entrenamiento con arquitectura de pipelines robusta.
+Script de entrenamiento con los modelos tradicionales con arquitectura de pipelines robusta.
 Combina lo mejor de ambas plantillas: modularidad + validación matemática correcta.
 
 CARACTERÍSTICAS CLAVE:

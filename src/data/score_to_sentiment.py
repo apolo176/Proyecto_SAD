@@ -1,3 +1,14 @@
+#!/usr/bin/env python3
+"""
+Script de preprocesamiento y transformación inicial del dataset crudo.
+Convierte puntuaciones numéricas en etiquetas categóricas de sentimiento y realiza el primer split de los datos.
+
+CARACTERÍSTICAS CLAVE:
+- Mapeo de la columna numérica 'score' (1-5) a etiquetas categóricas de 'sentiment' (NEGATIVO, NEUTRO, POSITIVO).
+- División estratificada (Train/Test) garantizando el equilibrio representativo de las clases a partir de la configuración.
+- Creación de los archivos base listos para ser consumidos por el resto de scripts de modelado o balanceo.
+"""
+
 import pandas as pd
 from sklearn.model_selection import train_test_split
 import os

@@ -1,3 +1,15 @@
+#!/usr/bin/env python3
+"""
+Script de experimentación y clasificación con modelos generativos (LLMs) mediante Ollama.
+Evalúa sistemáticamente diferentes plantillas de prompts para la tarea de análisis de sentimientos.
+
+CARACTERÍSTICAS CLAVE:
+- Conexión local con modelo Ollama3.
+- Evaluación estructurada de múltiples enfoques, mostrando la evolución/mejoras que han tenido (Zero-shot, One-shot, Few-shot). Solo se usan los "bueno" y "mejorado".
+- Cálculo de métricas (F1-Macro) sobre el conjunto Dev para seleccionar automáticamente la mejor plantilla.
+- Generación de un archivo CSV con las predicciones, los prompts empleados y los resultados mapeados.
+"""
+
 import sys
 import os
 import pandas as pd
