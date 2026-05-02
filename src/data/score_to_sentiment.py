@@ -34,16 +34,16 @@ def preparar_dataset():
     # 3. Preparar carpeta de salida
     os.makedirs('data', exist_ok=True)
 
-    # 4. División: TRAIN (80%) y TEST (20%) para hacer pruebas nosotros
-    # Se mantiene el parámetro 'stratify' para asegurar una distribución equitativa de clases
-
+    # 4. División: TRAIN y TEST controlada por config.json
     config = load_config('config.json')
+    test_split = config.get('test', {}).get('test_split', 0.20)
 
+    # Se mantiene el parámetro 'stratify' para asegurar una distribución equitativa de clases
     train, test = train_test_split(
         df,
-        test_size=0.20,
+        test_size=test_split,
         stratify=df['sentiment'],
-        random_state= config['general']['random_state']
+        random_state=config['general']['random_state']
     )
 
     # 5. Guardar archivos resultantes
@@ -51,8 +51,8 @@ def preparar_dataset():
     test.to_csv('data/test.csv', index=False, encoding='utf-8')
 
     print(f"✅ Proceso finalizado para Apple Music:")
-    print(f"   - data/train.csv: {len(train)} muestras")
-    print(f"   - data/test.csv: {len(test)} muestras")
+    print(f"   - data/train.csv: {len(train)} muestras ({(1 - test_split) * 100:.0f}%)")
+    print(f"   - data/test.csv: {len(test)} muestras ({test_split * 100:.0f}%)")
 
 
 if __name__ == "__main__":

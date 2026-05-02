@@ -28,7 +28,7 @@
         }
     },
     "preprocessing": {
-        "test_size": 0.25,
+        "dev_size": 0.25,
         "text_process": "tf_idf",
         "sampling": "oversampling",
         "impute_strategy_numeric": "mean",
@@ -91,12 +91,13 @@
         ]
     },
     "test": {
+        "test_split": 0.10,
         "metricas_output": "resultados/metricas_modelos.csv",
         "predicciones_output": "resultados/predicciones_test.csv"
     },
     "generative": {
-        "n_generations": 200,
-        "eval_dev_limit": 150,
-        "eval_test_limit": 200
+        "n_generations": 300,
+        "eval_dev_limit": null,
+        "eval_test_limit": null
     }
 }

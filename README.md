@@ -1,4 +1,4 @@
-# 🚀 Proyecto SAD Grupal — Los Aves Rapaces
+# 🚀 Proyecto SAD Grupal
 
 **Análisis de sentimientos de reseñas de plataformas musicales (Spotify, Apple Music, Tidal, SoundCloud)**
 
@@ -88,12 +88,12 @@ python -m src.analysis.test_generativo
 
 ## 👥 División de trabajo
 
-| Persona | Responsabilidad | Ficheros clave |
-|---------|----------------|---------------|
-| Líder Clasificación | Modelos clásicos | `src/models/train.py`, `config.json` |
-| Líder Generativo | Ollama + prompts | `src/analysis/generativo.py` |
-| Líder Clustering | Análisis LDA | `src/analysis/clustering.py` |
-| Líder Visualización | Tableau | `resultados/*.csv` |
+| Persona | Responsabilidad | Ficheros clave                                                                                  |
+|---------|----------------|-------------------------------------------------------------------------------------------------|
+| Líder Clasificación | Modelos clásicos | `src/models/train.py`, `src/models/test.py`, `config.json`                                      |
+| Líder Generativo | Ollama + prompts | `src/analysis/generativo.py`, `src/analysis/test_generativo.py`, `src/data/balancear_con_ia.py` |
+| Líder Clustering | Análisis LDA | `src/analysis/clustering.py`                                                                    |
+| Líder Visualización | Tableau | `resultados/*.csv`                                                                              |
 
 ---
 

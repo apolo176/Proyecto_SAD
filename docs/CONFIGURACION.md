@@ -58,7 +58,7 @@ Controla cómo se transforman los datos antes de entrenar.
 
 ```json
 "preprocessing": {
-    "test_size": 0.25,
+    "dev_size": 0.25,
     "text_process": "tf_idf",
     "sampling": "oversampling",
     "impute_strategy_numeric": "mean",
@@ -67,14 +67,14 @@ Controla cómo se transforman los datos antes de entrenar.
 }
 ```
 
-| Campo | Valores posibles | Descripción |
-|-------|-----------------|-------------|
-| `test_size` | `0.0` – `1.0` | Proporción del dataset dedicada a validación (dev). `0.25` = 25%. |
-| `text_process` | `"tf_idf"` · `"bow"` | Vectorización del texto. TF-IDF penaliza términos muy frecuentes; BoW cuenta ocurrencias directamente. Para clasificación de sentimientos, TF-IDF suele dar mejores resultados. |
-| `sampling` | `"oversampling"` · `"undersampling"` · `null` | Estrategia para clases desbalanceadas. `null` desactiva el balanceo. |
-| `impute_strategy_numeric` | `"mean"` · `"median"` · `"most_frequent"` | Cómo rellenar valores nulos en columnas numéricas. |
+| Campo                         | Valores posibles | Descripción |
+|-------------------------------|-----------------|-------------|
+| `dev_size`                    | `0.0` – `1.0` | Proporción del dataset dedicada a validación (dev). `0.25` = 25%. |
+| `text_process`                | `"tf_idf"` · `"bow"` | Vectorización del texto. TF-IDF penaliza términos muy frecuentes; BoW cuenta ocurrencias directamente. Para clasificación de sentimientos, TF-IDF suele dar mejores resultados. |
+| `sampling`                    | `"oversampling"` · `"undersampling"` · `null` | Estrategia para clases desbalanceadas. `null` desactiva el balanceo. |
+| `impute_strategy_numeric`     | `"mean"` · `"median"` · `"most_frequent"` | Cómo rellenar valores nulos en columnas numéricas. |
 | `impute_strategy_categorical` | `"most_frequent"` · `"constant"` | Cómo rellenar valores nulos en columnas categóricas. |
-| `scaling` | `"minmax"` · `"standard"` | Normalización de columnas numéricas. MinMax escala a [0,1]; Standard a media 0 y desviación 1. |
+| `scaling`                     | `"minmax"` · `"standard"` | Normalización de columnas numéricas. MinMax escala a [0,1]; Standard a media 0 y desviación 1. |
 
 **Nota sobre `sampling`:** el balanceo se aplica **dentro del pipeline**, solo sobre el conjunto de train, nunca sobre dev ni test. Esto garantiza que no hay fuga de información.
 
@@ -223,14 +223,16 @@ Define dónde se guardan los resultados de evaluación.
 
 ```json
 "test": {
+    "test_split": 0.10,    
     "metricas_output": "resultados/metricas_modelos.csv",
     "predicciones_output": "resultados/predicciones_test.csv"
 }
 ```
 
-| Campo | Descripción |
-|-------|-------------|
-| `metricas_output` | CSV con accuracy, F1 macro/micro/weighted, precision y recall de cada modelo. |
+| Campo                 | Descripción |
+|-----------------------|-------------|
+| `test_split`          | Proporción del dataset original (crudo) dedicada a la prueba final (test.csv). Ej: 0.20 = 20%. |
+| `metricas_output`     | CSV con accuracy, F1 macro/micro/weighted, precision y recall de cada modelo. |
 | `predicciones_output` | CSV con las predicciones de cada modelo sobre el conjunto de test, junto con los datos originales. |
 
 ---
@@ -311,7 +313,7 @@ Para ejecutar el clustering de las 4 plataformas, cambia `name` y `data.train_de
         }
     },
     "preprocessing": {
-        "test_size": 0.25,
+        "dev_size": 0.25,
         "text_process": "tf_idf",
         "sampling": null,
         "impute_strategy_numeric": "mean",
@@ -333,6 +335,7 @@ Para ejecutar el clustering de las 4 plataformas, cambia `name` y `data.train_de
         ]
     },
     "test": {
+        "test_split": 0.10
         "metricas_output": "resultados/metricas_modelos.csv",
         "predicciones_output": "resultados/predicciones_test.csv"
     }

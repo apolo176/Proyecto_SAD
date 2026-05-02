@@ -144,11 +144,7 @@ def main():
     
     print("\n" + "="*70)
     print("✅ Datos de ejemplo generados exitosamente!")
-    print("\n💡 Próximos pasos:")
-    print("   1. Revisar config.json (ya configurado para estos datos)")
-    print("   2. Ejecutar: python train.py")
-    print("   3. Ejecutar: python test.py")
-    print("\n🚀 ¡Listo para empezar!")
+    print("\n💡 Próximo pasos:")
 
 
 if __name__ == '__main__':

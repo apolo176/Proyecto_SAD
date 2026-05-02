@@ -475,19 +475,20 @@ def main():
         else:
             # MODO TRADICIONAL: DIVISIÓN TRAIN/DEV INTERNA
             print(f"\n✂️ Modo Tradicional: Dividiendo datos (Train/Dev)...")
-            test_size = config.get('test_size', 0.25)
+
+            dev_size = config.get('dev_size', 0.25)
             random_state = config.get('random_state', 42)
 
             X_train, X_dev, y_train, y_dev = train_test_split(
                 X, y,
-                test_size=test_size,
+                test_size=dev_size,
                 stratify=y,
                 random_state=random_state
             )
     
     print(f"   - Train: {X_train.shape[0]} muestras")
     print(f"   - Dev: {X_dev.shape[0]} muestras")
-    print(f"   - Proporción: {(1-test_size)*100:.0f}% / {test_size*100:.0f}%")
+    print(f"   - Proporción: {(1-dev_size)*100:.0f}% / {dev_size*100:.0f}%")
     
     # Entrenar cada modelo activo
     modelos = config.get('modelos', [])

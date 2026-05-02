@@ -27,7 +27,7 @@ def balancear_dataset():
     # 2. SPLIT ANTES DEL OVERSAMPLING (Crucial para evitar Data Leakage)
     X_train, X_dev, y_train, y_dev = train_test_split(
         df[[col_texto]], df[col_target],
-        test_size=config['preprocessing']['test_size'],
+        test_size=config['preprocessing']['dev_size'],
         stratify=df[col_target],
         random_state=config['general']['random_state']
     )

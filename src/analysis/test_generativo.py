@@ -136,10 +136,11 @@ def main():
 
     # 2. Cargar Configuración y Datos de Test
     print("\n📖 Cargando datos de test...")
-    config = load_config('config.json')
-    test_file = config['general']['data']['test']
-    columna_texto = config['general']['text_features'][0]
-    columna_target = config['general']['column']
+    config = load_config('config.json', sections=['general', 'test', 'generative'])
+
+    test_file = config.get('test')
+    columna_texto = config.get('text_features')[0]
+    columna_target = config.get('column')
 
     if not os.path.exists(test_file):
         print(f"❌ Error: archivo de test '{test_file}' no encontrado")
@@ -148,7 +149,7 @@ def main():
     df_test = load_data(test_file)
     print(f"📂 Datos de test cargados: {len(df_test)} instancias en total.")
 
-    eval_test_limit = config.get('generative', {}).get('eval_test_limit', None)
+    eval_test_limit = config.get('eval_test_limit', None)
 
     if eval_test_limit is not None and eval_test_limit < len(df_test):
         print(f"⚠️ Aplicando límite de test: se evaluarán solo {eval_test_limit} instancias.")
@@ -186,7 +187,7 @@ def main():
 
     # 5. Integración con resultados de modelos tradicionales
     print_section_header("INTEGRACIÓN DE RESULTADOS", char="─")
-    metricas_output = config.get('test', {}).get('metricas_output', 'resultados/metricas_modelos.csv')
+    metricas_output = config.get('metricas_output', 'resultados/metricas_modelos.csv')
     df_nuevo = pd.DataFrame([metricas_generativo])
 
     if os.path.exists(metricas_output):

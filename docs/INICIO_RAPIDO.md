@@ -68,13 +68,13 @@ Todos los comandos se ejecutan desde la **raíz del proyecto** (`Proyecto_SAD/`)
 
 ### Paso 1 — Preparar los datos
 
-Convierte las puntuaciones numéricas (ej. estrellas 1-5) a etiquetas de sentimiento:
+Convierte las puntuaciones numéricas (ej. estrellas 1-5) a etiquetas de sentimiento y realiza la separación de los datos:
 
 ```bash
 python -m src.data.score_to_sentiment
 ```
 
-Genera `data/train.csv` y `data/test.csv` con la columna `sentiment` lista para entrenar.
+Genera `data/train.csv` y `data/test.csv` con la columna `sentiment` lista para entrenar. (**Nota**: El porcentaje de separación se controla desde el parámetro test_split en config.json).
 
 ### Paso 2 — (Opcional) Balancear clases con IA
 

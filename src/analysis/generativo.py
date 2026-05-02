@@ -155,12 +155,12 @@ def generar_entregable():
     df = load_data(ruta_datos)
 
     # 2. Replicar el split exacto que hace train.py para no tener Data Leakage
-    test_size = config['preprocessing']['test_size']
+    dev_size = config['preprocessing']['dev_size']
     random_state = config['general']['random_state']
 
     X_train, X_dev, y_train, y_dev = train_test_split(
         df[[columna_texto]], df[columna_target],
-        test_size=test_size,
+        test_size=dev_size,
         stratify=df[columna_target],
         random_state=random_state
     )
