@@ -1,0 +1,19 @@
+{
+    "general": {
+        "random_state": 42,
+        "column": "sentiment",
+        "text_features": ["review"],
+        "language": "english"
+    },
+    "clustering": {
+        "name": "AppleMusic_2023_2025",
+        "num_topics_range": { "min": 2, "max_positivo": 7, "max_negativo": 7 },
+        "passes": 6,
+        "coherence_metric": "c_v",
+        "output_dir": "data/auxiliarTableau/AppleMusic/2023-2025",
+        "text_col": "review",
+        "data": {
+            "train_dev": "data/auxiliarTableau/AppleMusic/AppleMusic_Limpio-2023-2025.csv"
+        }
+    }
+}
