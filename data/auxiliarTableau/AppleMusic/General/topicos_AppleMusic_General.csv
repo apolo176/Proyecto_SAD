@@ -1,4 +1,4 @@
-Polaridad_Clustering,Topic_ID,Palabras_Clave
+Polaridad_Clustering,Topic_ID,Palabras_Clave,Descripcion
 negativo,0,"family, trial, plan, error, code, card, account, android, password, email","Cuentas y planes Familiares"
 negativo,1,"update, random, subscriptions, autoplay, password, audio, list, volume, atmos, errors","Actualizaciones y AutoPlay"
 negativo,2,"phone, crashes, unable, data, audio, lyrics, samsung, pixel, call, update","Crashes en otros dispositivos"
