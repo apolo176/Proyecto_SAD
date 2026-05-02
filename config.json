@@ -97,6 +97,6 @@
     "generative": {
         "n_generations": 200,
         "eval_dev_limit": 150,
-        "eval_test_limit": null
+        "eval_test_limit": 200
     }
 }

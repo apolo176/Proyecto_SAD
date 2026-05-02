@@ -194,7 +194,7 @@ def main():
         df_existente = df_existente[df_existente['modelo'] != nombre_modelo_gen]
         df_final = pd.concat([df_existente, df_nuevo], ignore_index=True)
     else:
-        print("⚠️ No se encontró archivo previo de modelos tradicionales. Creando uno nuevo.")
+        print("⚠️ No se encontró archivo previo de modelos tradicionales.")
         df_final = df_nuevo
 
     df_final = df_final.sort_values('f1_macro', ascending=False)
