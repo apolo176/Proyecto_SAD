@@ -15,14 +15,17 @@ for EMPRESA in "${!FRANJAS[@]}"; do
     echo ">>> Empresa: $EMPRESA"
     
     for FRANJA in ${FRANJAS[$EMPRESA]}; do
-        # Ruta del config relativa a esta carpeta
-        CONFIG_FILE="./$EMPRESA/config_$FRANJA.json"
+        # Reemplazar el guion medio por guion bajo para el nombre del archivo JSON
+        FRANJA_JSON="${FRANJA//-/_}"
+        
+        # Ruta del config relativa a esta carpeta usando el nombre con guion bajo
+        CONFIG_FILE="./$EMPRESA/config_${FRANJA_JSON}.json"
         
         if [ -f "$CONFIG_FILE" ]; then
             echo "--------------------------------------------"
             echo "Procesando la franja $FRANJA de $EMPRESA..."
             
-            # Creamos la carpeta de salida (relativa a donde estamos)
+            # Creamos la carpeta de salida (relativa a donde estamos) manteniendo el guion medio
             mkdir -p "./$EMPRESA/$FRANJA"
             
             # EJECUCIÓN:
@@ -30,7 +33,8 @@ for EMPRESA in "${!FRANJAS[@]}"; do
             # 2. Ejecutamos el módulo usando la ruta del config desde el root
             # 3. Volvemos a la carpeta auxiliarTableau
             
-            CONFIG_PATH_FOR_PYTHON="data/auxiliarTableau/$EMPRESA/config_$FRANJA.json"
+            # También actualizamos la ruta para Python con la versión que tiene guion bajo
+            CONFIG_PATH_FOR_PYTHON="data/auxiliarTableau/$EMPRESA/config_${FRANJA_JSON}.json"
             
             cd "$PROJECT_ROOT"
             python3 -m src.analysis.clustering -c "$CONFIG_PATH_FOR_PYTHON"
