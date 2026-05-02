@@ -5,16 +5,25 @@ import os
 from src.utils.funciones import load_config, load_data
 
 def preparar_dataset():
-    print("Procesando datos de Apple Music...")
+    # 1. Cargar la configuración general
+    config = load_config('config.json')
 
-    # 1. Cargar el archivo de Apple Music
+    # Extraemos la ruta del archivo original y el test_split
+    # Como load_config aplana el JSON, podemos acceder directamente
+    raw_file = config.get('raw_file', 'data/AppleMusic.csv')
+    test_split = config.get('test_split', 0.20)
+
+    plataforma_nombre = os.path.basename(raw_file).split('.')[0]
+    print(f"Procesando datos de {plataforma_nombre}...")
+
+    # 2. Cargar el archivo crudo
     try:
-        df = pd.read_csv('data/AppleMusic.csv')
+        df = pd.read_csv(raw_file)
     except FileNotFoundError as e:
-        print(f"Error: No se ha encontrado 'data/AppleMusic.csv'. {e}")
+        print(f"❌ Error: No se ha encontrado el archivo '{raw_file}'. {e}")
         return
 
-    # 2. Mapeo de Score (1-5) a Sentimiento (Negativo, Neutro, Positivo)
+    # 3. Mapeo de Score (1-5) a Sentimiento (Negativo, Neutro, Positivo)
     def mapear_sentimiento(score):
         try:
             s = int(score)
@@ -31,10 +40,10 @@ def preparar_dataset():
         print("⚠️ Error: La columna 'score' no existe en el archivo.")
         return
 
-    # 3. Preparar carpeta de salida
+    # 4. Preparar carpeta de salida
     os.makedirs('data', exist_ok=True)
 
-    # 4. División: TRAIN y TEST controlada por config.json
+    # 5. División: TRAIN y TEST controlada por config.json
     config = load_config('config.json')
     test_split = config.get('test', {}).get('test_split', 0.20)
 
@@ -46,7 +55,7 @@ def preparar_dataset():
         random_state=config['general']['random_state']
     )
 
-    # 5. Guardar archivos resultantes
+    # 6. Guardar archivos resultantes
     train.to_csv('data/train.csv', index=False, encoding='utf-8')
     test.to_csv('data/test.csv', index=False, encoding='utf-8')
 

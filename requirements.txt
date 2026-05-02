@@ -8,6 +8,7 @@ joblib==1.5.3              # Gestión de pipelines y paralelismo
 sklearn-compat==0.1.5      # Compatibilidad para scikit-learn
 
 # --- PROCESAMIENTO DE LENGUAJE NATURAL (NLP) ---
+langdetect==1.0.9
 nltk==3.9.4                # Cumple con >=3.9.0 
 gensim==4.4.0              # Modelado de temas y embeddings
 regex==2026.4.4            # Motor de expresiones regulares avanzado

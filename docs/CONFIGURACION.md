@@ -32,6 +32,7 @@ Controla qué columnas usar y dónde están los datos.
     "drop_features": ["reviewId", "score", "location", "date", "App", "gender"],
     "language": "english",
     "data": {
+        "raw_file": "data/AppleMusic.csv",
         "train_dev": "data/train.csv",
         "dev_file": null,
         "test": "data/test.csv"
@@ -39,16 +40,17 @@ Controla qué columnas usar y dónde están los datos.
 }
 ```
 
-| Campo | Tipo | Descripción |
-|-------|------|-------------|
-| `random_state` | `int` | Semilla aleatoria. Usar siempre el mismo valor garantiza reproducibilidad. |
-| `column` | `string` | Nombre de la columna objetivo (la que el modelo tiene que predecir). |
-| `text_features` | `list[string]` | Columnas de texto libre. Se procesan con TF-IDF o BoW. |
-| `drop_features` | `list[string]` | Columnas que se eliminan antes de entrenar (IDs, fechas, etc.). |
-| `language` | `string` | Idioma para las stopwords de NLTK. Valores: `"english"`, `"spanish"`, `"french"`, etc. |
-| `data.train_dev` | `string` | Ruta al CSV de entrenamiento + validación. |
-| `data.dev_file` | `string\|null` | Ruta a un CSV de validación separado. `null` si no existe (se crea la división automáticamente). |
-| `data.test` | `string` | Ruta al CSV de test final. |
+| Campo            | Tipo | Descripción                                                                                                        |
+|------------------|------|--------------------------------------------------------------------------------------------------------------------|
+| `random_state`   | `int` | Semilla aleatoria. Usar siempre el mismo valor garantiza reproducibilidad.                                         |
+| `column`         | `string` | Nombre de la columna objetivo (la que el modelo tiene que predecir).                                               |
+| `text_features`  | `list[string]` | Columnas de texto libre. Se procesan con TF-IDF o BoW.                                                             |
+| `drop_features`  | `list[string]` | Columnas que se eliminan antes de entrenar (IDs, fechas, etc.).                                                    |
+| `language`       | `string` | Idioma para las stopwords de NLTK. Valores: `"english"`, `"spanish"`, `"french"`, etc.                             |
+| `data.raw_file`  | `string` | Ruta al CSV crudo original (ej. AppleMusic.csv). Utilizado por `score_to_sentiment.py` para generar las particiones. |
+| `data.train_dev` | `string` | Ruta al CSV de entrenamiento + validación.                                                                         |
+| `data.dev_file`  | `string\|null` | Ruta a un CSV de validación separado. `null` si no existe (se crea la división automáticamente).                   |
+| `data.test`      | `string` | Ruta al CSV de test final.                                                                                         |
 
 ---
 
@@ -307,6 +309,7 @@ Para ejecutar el clustering de las 4 plataformas, cambia `name` y `data.train_de
         "drop_features": [],
         "language": "english",
         "data": {
+            "raw_file": "data/AppleMusic.csv",
             "train_dev": "data/train.csv",
             "dev_file": null,
             "test": "data/test.csv"

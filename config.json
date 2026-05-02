@@ -6,6 +6,7 @@
         "drop_features": ["reviewId", "score", "location", "date", "App", "gender"],
         "language": "english",
         "data": {
+            "raw_file": "data/AppleMusic.csv",
             "train_dev": "data/train.csv",
             "dev_file": null,
             "test": "data/test.csv"
