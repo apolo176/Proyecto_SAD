@@ -1,13 +1,6 @@
-# PlantillaHíbrida - gitignore
-
 # Modelos entrenados
-modelos/
 *.pkl
 *.pickle
-
-# Resultados
-
-output/
 
 # Python
 __pycache__/

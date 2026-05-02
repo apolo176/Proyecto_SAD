@@ -17,8 +17,6 @@ import pickle
 import os
 import sys
 import pandas as pd
-import numpy as np
-from pathlib import Path
 
 # Sklearn imports
 from sklearn.model_selection import train_test_split, GridSearchCV
