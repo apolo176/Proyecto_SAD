@@ -1,8 +1,8 @@
-Polaridad_Clustering,Topic_ID,Palabras_Clave
-positivo,0,"time, android, update, platforms, problems, offline, audio, sweet, galaxy, rate"
-positivo,1,"devices, interface, syncs, clean, mixes, suggestions, user, personalized, android, enjoyable"
-positivo,2,"audio, lossless, atmos, dolby, lyrics, options, hires, feature, india, spatial"
-positivo,3,"search, specific, problem, download, option, phone, bugs, trial, edit, pixel"
-positivo,4,"android, curated, powerful, voice, commands, stable, regular, service, player, device"
-positivo,5,"platform, algorithm, didnt, service, clear, podcasts, issue, android, choice, audio"
-positivo,6,"phone, account, android, selection, samsung, product, smooth, products, video, recommendation"
+Polaridad_Clustering,Topic_ID,Palabras_Clave,Descripcion
+positivo,0,"time, android, update, platforms, problems, offline, audio, sweet, galaxy, rate","Soporte Android y modo Offline"
+positivo,1,"devices, interface, syncs, clean, mixes, suggestions, user, personalized, android, enjoyable","Interfaz y Personalización"
+positivo,2,"audio, lossless, atmos, dolby, lyrics, options, hires, feature, india, spatial","Audio Premium"
+positivo,3,"search, specific, problem, download, option, phone, bugs, trial, edit, pixel","Búsquedas y Periodo de Prueba"
+positivo,4,"android, curated, powerful, voice, commands, stable, regular, service, player, device","Control de Voz y Estabilidad"
+positivo,5,"platform, algorithm, didnt, service, clear, podcasts, issue, android, choice, audio","Algoritmo de Recomendaciones"
+positivo,6,"phone, account, android, selection, samsung, product, smooth, products, video, recommendation","Cuentas y Soporte Android"
