@@ -117,8 +117,20 @@ def main():
     entrada_usada = primera_fila['Entrada']
     prompt_ganador = prompt_usado.replace(entrada_usada, "{texto}")
 
-    nombre_experimento = primera_fila['Modelo y Tamaño'].split('(')[-1].replace(')', '')
-    nombre_modelo_gen = f"Ollama_{MODELO_OLLAMA}_{nombre_experimento}"
+    # --- NUEVA LÓGICA DE EXTRACCIÓN DE NOMBRE ---
+    texto_modelo = primera_fila['Modelo y Tamaño']
+
+    # Extraemos desde el primer paréntesis abierto hasta el último cerrado
+    # De "ej.: [MEJOR RESULTADO] llama3 (Zero-shot (Bueno))" -> "Zero-shot (Bueno)"
+    inicio = texto_modelo.find('(')
+    nombre_experimento = texto_modelo[inicio + 1:-1]
+
+    # Formateamos el nombre para que sea un ID limpio (sin espacios ni paréntesis)
+    nombre_formateado = nombre_experimento.replace('-', '_').replace(' ', '_').replace('(', '').replace(')', '')
+    nombre_formateado = nombre_formateado.replace('__', '_')  # Por si quedan dobles guiones
+
+    nombre_modelo_gen = f"Ollama_{MODELO_OLLAMA}_{nombre_formateado}"
+    # ----------------------------------------------
 
     print(f"✅ ¡Plantilla '{nombre_experimento}' recuperada con éxito!")
 
@@ -134,7 +146,23 @@ def main():
         sys.exit(1)
 
     df_test = load_data(test_file)
-    print(f"📂 Datos de test cargados: {len(df_test)} instancias.")
+    print(f"📂 Datos de test cargados: {len(df_test)} instancias en total.")
+
+    eval_test_limit = config.get('generative', {}).get('eval_test_limit', None)
+
+    if eval_test_limit is not None and eval_test_limit < len(df_test):
+        print(f"⚠️ Aplicando límite de test: se evaluarán solo {eval_test_limit} instancias.")
+        # Muestreo estratificado para mantener proporciones
+        from sklearn.model_selection import train_test_split
+        _, df_test_reducido = train_test_split(
+            df_test,
+            test_size=eval_test_limit,
+            stratify=df_test[columna_target],
+            random_state=config['general']['random_state']
+        )
+        df_test = df_test_reducido
+    else:
+        print("📊 Evaluando sobre TODAS las instancias de test.")
 
     textos_test = df_test[columna_texto].tolist()
     y_verdadero = df_test[columna_target].tolist()

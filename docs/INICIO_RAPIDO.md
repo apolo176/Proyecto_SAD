@@ -7,7 +7,7 @@ Guía para levantar el proyecto, entrenar modelos y generar resultados en el men
 ## Requisitos previos
 
 - Python 3.12+
-- [Ollama](https://ollama.com/) instalado y corriendo (solo para los módulos generativo y balanceo con IA)
+- [ollama3:8b](https://ollama.com/) instalado y corriendo (solo para los módulos generativo y balanceo con IA)
 
 ---
 
@@ -138,7 +138,7 @@ Requiere Ollama activo.
 ### Paso 7 — Evaluar modelo generativo
 
 ```bash
-python -m src.models.test_generativo
+python -m src.analysis.test_generativo
 ```
 
 Carga el mejor prompt encontrado en el paso anterior y lo evalúa sobre el conjunto de test.

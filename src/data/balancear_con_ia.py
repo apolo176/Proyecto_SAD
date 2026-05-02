@@ -2,7 +2,7 @@ import pandas as pd
 import ollama
 from tqdm import tqdm
 from sklearn.model_selection import train_test_split
-from funciones import load_config, load_data
+from src.utils.funciones import load_config, load_data
 
 PROMPT_PARAFRASIS = """Reescribe la siguiente opinión de una app de música (Apple Music/Spotify) manteniendo exactamente el MISMO sentimiento, pero usando diferentes palabras y estructuras.
 No añadas introducciones, confirmaciones ni comillas. Genera SOLO la reseña. El idioma a usar tiene que ser el INGLÉS.

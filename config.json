@@ -95,6 +95,8 @@
         "predicciones_output": "resultados/predicciones_test.csv"
     },
     "generative": {
-        "n_generations": 200
+        "n_generations": 200,
+        "eval_dev_limit": 150,
+        "eval_test_limit": null
     }
 }

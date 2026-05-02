@@ -1,4 +1,4 @@
-# 🚀 Proyecto SAD — Plantilla Híbrida de Machine Learning
+# 🚀 Proyecto SAD Grupal — Los Aves Rapaces
 
 **Análisis de sentimientos de reseñas de plataformas musicales (Spotify, Apple Music, Tidal, SoundCloud)**
 
@@ -17,11 +17,12 @@ Proyecto_SAD/
 │   │   └── balancear_con_ia.py    # Balanceo de clases con IA (Ollama)
 │   ├── models/
 │   │   ├── train.py               # Entrenamiento de modelos clásicos
-│   │   ├── test.py                # Evaluación de modelos entrenados
-│   │   └── test_generativo.py     # Evaluación del modelo generativo
+│   │   └── test.py                # Evaluación de modelos entrenados
+│   │
 │   └── analysis/
 │       ├── clustering.py          # Modelado de tópicos con LDA (Gensim)
-│       └── generativo.py          # Clasificación con Ollama (prompt engineering)
+│       ├── generativo.py          # Clasificación con Ollama (prompt engineering)
+│       └── test_generativo.py     # Evaluación del modelo generativo
 │
 ├── data/                        # Datasets (no versionados)
 ├── modelos/                     # Modelos entrenados .pkl (auto-generados)
@@ -34,6 +35,7 @@ Proyecto_SAD/
 ├── docs/                        # Documentación extra
 │   ├── INICIO_RAPIDO.md
 │   └── COMPARACION_TECNICA.md
+│   └── CLUSTERING.md
 │
 ├── examples/
 │   └── ejemplo_generar_datos.py # Script de prueba con datos sintéticos
@@ -79,7 +81,7 @@ python -m src.analysis.clustering
 python -m src.analysis.generativo
 
 # 7. Evaluar modelo generativo
-python -m src.models.test_generativo
+python -m src.analysis.test_generativo
 ```
 
 ---

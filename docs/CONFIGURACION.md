@@ -278,13 +278,17 @@ Para ejecutar el clustering de las 4 plataformas, cambia `name` y `data.train_de
 
 ```json
 "generative": {
-    "n_generations": 200
+    "n_generations": 200,
+    "eval_dev_limit": 150,
+    "eval_test_limit": null    
 }
 ```
 
-| Campo | Descripción |
-|-------|-------------|
-| `n_generations` | Número de muestras que se evalúan con cada prompt durante la fase de experimentación en `generativo.py`. |
+| Campo             | Descripción                                                                                                                                                                                                                                                       |
+|-------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `n_generations`   | Número de instancias que se quieren generar con Ollama para hacer oversampling, en `balancear_con_ia.py`.                                                                                                                                                         |
+| `eval_dev_limit`  | Número de reseñas del conjunto `dev` que se evaluarán para decidir cuál es el mejor prompt en `generativo.py`. Si se define como null, se evaluará todo el conjunto dev. Un número bajo (ej. 20) acelera las pruebas, aunque no obtendremos un resultado fidedigno. |
+| `eval_test_limit` | Número de reseñas del conjunto `test` que se usarán en la evaluación final de `test_generativo.py`. Si se define como null (recomendado para la entrega final), se evalúa todo el test.                                                                                                                                                       |
 
 ---
 

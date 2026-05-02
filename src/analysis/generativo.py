@@ -1,4 +1,5 @@
 import sys
+import os
 import pandas as pd
 import ollama
 from tqdm import tqdm
@@ -149,6 +150,7 @@ def generar_entregable():
     ruta_datos = config['general']['data']['train_dev']
     columna_texto = config['general']['text_features'][0]
     columna_target = config['general']['column']
+    eval_dev_limit = config.get('generative', {}).get('eval_dev_limit', 150)
 
     df = load_data(ruta_datos)
 
@@ -163,17 +165,21 @@ def generar_entregable():
         random_state=random_state
     )
 
-    # 3. Tomar una muestra ESTRATIFICADA de DEV para evaluar
-    # Usamos en este caso 150 muestras para que no tarde horas, pero manteniendo la proporción de clases
-    _, muestra_dev, _, y_muestra_dev = train_test_split(
-        X_dev, y_dev,
-        test_size=150,
-        stratify=y_dev,
-        random_state=random_state
-    )
-
-    textos_prueba = muestra_dev[columna_texto].tolist()
-    y_verdadero = y_muestra_dev.tolist()
+    # 3. Límite de instancias para evaluar DEV (leído desde config.json)
+    if eval_dev_limit is None or eval_dev_limit >= len(X_dev):
+        print(f"📊 Evaluando sobre TODO el conjunto DEV ({len(X_dev)} instancias).")
+        textos_prueba = X_dev[columna_texto].tolist()
+        y_verdadero = y_dev.tolist()
+    else:
+        print(f"📊 Evaluando sobre una muestra estratificada de {eval_dev_limit} instancias del DEV.")
+        _, muestra_dev, _, y_muestra_dev = train_test_split(
+            X_dev, y_dev,
+            test_size=eval_dev_limit,
+            stratify=y_dev,
+            random_state=random_state
+        )
+        textos_prueba = muestra_dev[columna_texto].tolist()
+        y_verdadero = y_muestra_dev.tolist()
 
     mapa_sentimientos = {'A': 'POSITIVO', 'B': 'NEUTRO', 'C': 'NEGATIVO'}
 
@@ -257,6 +263,7 @@ def generar_entregable():
     df_final = pd.concat([df_mejor, df_resto], ignore_index=True)
 
     columnas_finales = ["Modelo y Tamaño", "Prompt Empleado", "Entrada", "Salida"]
+    os.makedirs('resultados', exist_ok=True)
     df_final[columnas_finales].to_csv("resultados/resultados_generativos.csv", index=False, encoding='utf-8')
     print("\n✅ Archivo 'resultados_generativos.csv' generado con éxito.")
 
