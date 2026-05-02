@@ -44,7 +44,7 @@ from nltk.corpus import stopwords
 import re
 
 # Funciones propias
-from funciones import load_config, load_data, procesar_parametros, get_model_name, print_section_header
+from src.utils.funciones import load_config, load_data, procesar_parametros, get_model_name, print_section_header
 
 # Descargar recursos de NLTK si no están disponibles
 try:

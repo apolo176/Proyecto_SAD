@@ -2,7 +2,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 import os
 
-from funciones import load_config, load_data
+from src.utils.funciones import load_config, load_data
 
 def preparar_dataset():
     print("Procesando datos de Apple Music...")

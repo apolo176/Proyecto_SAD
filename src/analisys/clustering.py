@@ -19,7 +19,7 @@ from langdetect import detect, LangDetectException
 import unicodedata
 import argparse
 
-from funciones import load_config, load_data, print_section_header
+from src.utils.funciones import load_config, load_data, print_section_header
 
 # ---------------------------------------------------------------------------
 # SETUP

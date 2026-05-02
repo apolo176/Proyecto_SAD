@@ -1,64 +1,98 @@
-# 🚀 Proyecto SAD: Análisis de Sentimientos y Toma de Decisiones
+# 🚀 Proyecto SAD — Plantilla Híbrida de Machine Learning
 
-Este proyecto representa una situación real en una empresa de música. Como equipo de científicos de datos, nuestra misión es analizar el feedback de los usuarios para corregir el rumbo de la empresa y superar a la competencia. 
-
-> "¡Sin análisis no hay mejora, los datos son nuestro poder!"
-
-## 👥 El Equipo
-Los integrantes del equipo somos
-
-* **Eder Torres:**.
-* **Liviu Deleanu:**.
-* **Alexandriu Darie:**.
-* **Aitor Cotano:**.
+**Análisis de sentimientos de reseñas de plataformas musicales (Spotify, Apple Music, Tidal, SoundCloud)**
 
 ---
 
-## 🎯 Objetivos del Proyecto
-1.  **Análisis Comparativo:** Evaluar nuestra aplicación frente al competidor directo.
-2.  **Detección de Fortalezas y Debilidades:** Identificar puntos flacos y fuertes mediante datos.
-3.  **Sentiment Analysis:** Entrenar un clasificador (positivo, negativo, neutro) con datos de la app para luego analizar redes sociales como X, Instagram o TikTok.
-4.  **Clustering:** Indagar en las razones subyacentes tras las opiniones de los usuarios.
+## 📁 Estructura del Proyecto
 
-## 🛠️ Requisitos Técnicos
-### Modelado Tradicional
-* Implementación de algoritmos como KNN, Decision Trees, Random Forest o Logistic Regression.
-* Técnicas de balanceado: **Oversampling** y **Undersampling**.
-
-### Modelado Generativo
-* Uso de **Ollama** para clasificación mediante Prompt Engineering.
-* Generación de paráfrasis para aumentar datos de clases minoritarias.
-
-### Visualización (Tableau)
-* Creación de una historia de datos que responda a la evolución por género/localización y correlación zona/satisfacción.
+```
+Proyecto_SAD/
+│
+├── src/                         # Código fuente principal
+│   ├── utils/
+│   │   └── funciones.py         # Funciones auxiliares compartidas
+│   ├── data/
+│   │   ├── score_to_sentiment.py  # Conversión de puntuaciones a sentimiento
+│   │   └── balancear_con_ia.py    # Balanceo de clases con IA (Ollama)
+│   ├── models/
+│   │   ├── train.py               # Entrenamiento de modelos clásicos
+│   │   ├── test.py                # Evaluación de modelos entrenados
+│   │   └── test_generativo.py     # Evaluación del modelo generativo
+│   └── analysis/
+│       ├── clustering.py          # Modelado de tópicos con LDA (Gensim)
+│       └── generativo.py          # Clasificación con Ollama (prompt engineering)
+│
+├── data/                        # Datasets (no versionados)
+├── modelos/                     # Modelos entrenados .pkl (auto-generados)
+├── resultados/                  # Outputs generados
+│   ├── clustering_AppleMusic/
+│   ├── clustering_SoundCloud/
+│   ├── clustering_Spotify/
+│   └── clustering_Tidal/
+│
+├── docs/                        # Documentación extra
+│   ├── INICIO_RAPIDO.md
+│   └── COMPARACION_TECNICA.md
+│
+├── examples/
+│   └── ejemplo_generar_datos.py # Script de prueba con datos sintéticos
+│
+├── config.json                  # Configuración central del proyecto
+├── requirements.txt
+└── README.md
+```
 
 ---
 
-## 📂 Entregables (Fecha límite: 03/05/2026) 
-1.  **Poster:** Incluye abstract gráfico, tablas de resultados (con y sin balanceo) y gráfico del codo para clustering.
-2.  **Código del Clasificador:** Programa funcional, `requirements.txt` y manual de ejecución.
-3.  **Historia de Tableau:** Archivo con la narrativa de datos y visualización de clusters.
-4.  **CSV Generativo:** Informe de prompts empleados, modelos y resultados obtenidos.
-
----
-
-## 🔧 Instalación y Uso
-Para replicar nuestro entorno de trabajo:
+## 📦 Instalación
 
 ```bash
-# Instalar dependencias
+python -m venv venv
+source venv/bin/activate        # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
-# Ejecutar el clasificador
-python clasificador.py --data train.csv
-📚 Referencias Bibliográficas
-[1] The Big Book of Dashboards, Jeffrey Shaffer et al..
 
-[2] Storytelling con datos, Cole Nussbaumer Knaffic.
+---
 
-[3] Tutoriales de HuggingFace sobre Sentiment Analysis.
+## 🚀 Uso
 
-Curso: Sistemas de Ayuda a la Decisión (SAD)
+Todos los scripts se ejecutan desde la **raíz del proyecto**:
 
+```bash
+# 1. Preparar datos
+python -m src.data.score_to_sentiment
 
-Fecha: Marzo 2026
+# 2. (Opcional) Balancear con IA
+python -m src.data.balancear_con_ia
+
+# 3. Entrenar modelos clásicos
+python -m src.models.train
+
+# 4. Evaluar modelos clásicos
+python -m src.models.test
+
+# 5. Análisis de tópicos LDA
+python -m src.analysis.clustering
+
+# 6. Modelo generativo
+python -m src.analysis.generativo
+
+# 7. Evaluar modelo generativo
+python -m src.models.test_generativo
+```
+
+---
+
+## 👥 División de trabajo
+
+| Persona | Responsabilidad | Ficheros clave |
+|---------|----------------|---------------|
+| Líder Clasificación | Modelos clásicos | `src/models/train.py`, `config.json` |
+| Líder Generativo | Ollama + prompts | `src/analysis/generativo.py` |
+| Líder Clustering | Análisis LDA | `src/analysis/clustering.py` |
+| Líder Visualización | Tableau | `resultados/*.csv` |
+
+---
+
+Consulta `docs/INICIO_RAPIDO.md` para detalles de configuración y `docs/COMPARACION_TECNICA.md` para comparativas técnicas.

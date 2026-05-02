@@ -5,7 +5,7 @@ from tqdm import tqdm
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import f1_score
 
-from funciones import load_config, load_data
+from src.utils.funciones import load_config, load_data
 
 # ==========================================
 # 1. PLANTILLAS DE PROMPTS (Evolución y Pruebas)

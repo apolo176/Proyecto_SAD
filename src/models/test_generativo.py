@@ -16,7 +16,7 @@ from sklearn.metrics import (
     classification_report, confusion_matrix
 )
 
-from funciones import load_config, load_data, print_section_header
+from src.utils.funciones import load_config, load_data, print_section_header
 
 MODELO_OLLAMA = "llama3"
 

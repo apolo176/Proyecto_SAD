@@ -25,7 +25,7 @@ from sklearn.metrics import (
 )
 
 # Funciones propias
-from funciones import load_config, load_data, print_section_header
+from src.utils.funciones import load_config, load_data, print_section_header
 
 
 try:
