@@ -99,7 +99,7 @@ python -m src.analysis.test_generativo
 | Líder Clasificación | Modelos clásicos | `src/models/train.py`, `src/models/test.py`, `config.json`                                      |
 | Líder Generativo | Ollama + prompts | `src/analysis/generativo.py`, `src/analysis/test_generativo.py`, `src/data/balancear_con_ia.py` |
 | Líder Clustering | Análisis LDA | `src/analysis/clustering.py`                                                                    |
-| Líder Visualización | Tableau | `resultados/*.csv`, `data/auxiliarTableau/AppleMusic/*`, `data/auxiliarTableau/Spotify`           |
+| Líder Visualización | Tableau | `resultados/*.csv`, `data/auxiliarTableau/AppleMusic/*`, `data/auxiliarTableau/Spotify/*`           |
 
 ---
 
