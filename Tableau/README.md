@@ -31,9 +31,8 @@ Se entiende que hay un descontento general con ambas plataformas, y al sosteners
 ---
 
 # Comparativa demográfica ¿existe sesgo de género?
-
+Los hombres y las mujeres tienen la misma tendencia negativa a la hora de votar, por lo que concluímos que el descontento es universal y no existe sesgo de género.
 ![Evolución Anual, Media Bayesiana](Fotos-Informe/2.png)
-
 
 ---
 
