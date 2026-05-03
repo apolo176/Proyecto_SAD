@@ -1,0 +1,37 @@
+# --- CORE CIENTÍFICO Y DATOS ---
+# Se utilizan las versiones específicas que cumplen con los rangos de la plantilla mixta.
+numpy==1.26.4              # Cumple con >=1.26.0,<2.0.0 
+pandas==3.0.2              # Cumple con >=2.2.0 
+scikit-learn==1.8.0        # Versión exacta requerida por ambos 
+scipy==1.17.1              # Cumple con >=1.13.0 
+joblib==1.5.3              # Gestión de pipelines y paralelismo
+sklearn-compat==0.1.5      # Compatibilidad para scikit-learn
+
+# --- PROCESAMIENTO DE LENGUAJE NATURAL (NLP) ---
+langdetect==1.0.9
+nltk==3.9.4                # Cumple con >=3.9.0 
+gensim==4.4.0              # Modelado de temas y embeddings
+regex==2026.4.4            # Motor de expresiones regulares avanzado
+smart_open==7.6.0          # Streaming eficiente de archivos grandes
+
+# --- IA GENERATIVA Y BALANCEO ---
+ollama==0.6.1              # Interfaz para modelos de lenguaje locales 
+imbalanced-learn==0.14.1   # Cumple con >=0.14.0 para balanceo de clases 
+
+# --- VISUALIZACIÓN Y PROCESAMIENTO DE IMÁGENES ---
+matplotlib==3.10.8         # Gráficos y visualizaciones
+pillow==12.2.0             # Procesamiento de imágenes
+contourpy==1.3.3           # Cálculo de contornos para visualización
+cycler==0.12.1             # Ciclos de propiedades en gráficos
+fonttools==4.62.1          # Manipulación de fuentes tipográficas
+kiwisolver==1.5.0          # Motor de resolución de restricciones (layout)
+pyparsing==3.3.2           # Gramáticas de parsing de texto
+
+# --- UTILIDADES Y DEPENDENCIAS INTERNAS ---
+click==8.3.2               # Creación de interfaces de línea de comandos
+tqdm==4.67.3               # Barras de progreso, cumple con >=4.67.0 
+packaging==26.1            # Gestión de versiones de paquetes
+python-dateutil==2.9.0.post0 # Extensiones para manejo de fechas
+six==1.17.0                # Compatibilidad entre versiones
+threadpoolctl==3.6.0       # Control de hilos de librerías nativas
+wrapt==2.1.2               # Decoradores y proxies

@@ -26,10 +26,12 @@ from src.utils.funciones import load_config, load_data
 
 # --- EXPERIMENTOS ZERO-SHOT ---
 
+# (ya no se usa)
 PROMPT_ZERO_SHOT_MALO = """Dime el sentimiento de este comentario de una app.
 Comentario: '{texto}'
 Respuesta:"""
 
+# (ya no se usa)
 PROMPT_ZERO_SHOT_NORMAL = """Clasifica el siguiente texto en POSITIVO, NEGATIVO o NEUTRO.
 Intenta no decir nada más, solo la palabra.
 Texto: '{texto}'
@@ -47,6 +49,7 @@ Sentimiento:"""
 
 # --- EXPERIMENTOS ONE-SHOT ---
 
+# (ya no se usa)
 PROMPT_ONE_SHOT_MALO = """Clasifica el texto en Positivo, Negativo o Neutro.
 Ejemplo de cómo no funciona bien: "Esta app es un desastre" -> Creo que es negativo.
 Ahora hazlo tú con este: '{texto}'
@@ -79,6 +82,7 @@ Respuesta:"""
 
 # --- EXPERIMENTOS FEW-SHOT ---
 
+# (ya no se usa)
 PROMPT_FEW_SHOT_MALO = """Actúa como un adolescente en redes sociales. 
 Dime si estos comentarios sobre una app molan (POSITIVO), dan igual (NEUTRO) o son un rollo (NEGATIVO).
 'se cuelga' -> NEGATIVO
@@ -196,13 +200,13 @@ def generar_entregable():
     mapa_sentimientos = {'A': 'POSITIVO', 'B': 'NEUTRO', 'C': 'NEGATIVO'}
 
     experimentos = [
-        {"id": "Zero-shot (Malo)", "plantilla": PROMPT_ZERO_SHOT_MALO, "tokens": 20, "mapear": False},
-        {"id": "Zero-shot (Normal)", "plantilla": PROMPT_ZERO_SHOT_NORMAL, "tokens": 10, "mapear": False},
+        # {"id": "Zero-shot (Malo)", "plantilla": PROMPT_ZERO_SHOT_MALO, "tokens": 20, "mapear": False},
+        # {"id": "Zero-shot (Normal)", "plantilla": PROMPT_ZERO_SHOT_NORMAL, "tokens": 10, "mapear": False},
         {"id": "Zero-shot (Bueno)", "plantilla": PROMPT_ZERO_SHOT_BUENO, "tokens": 1, "mapear": True},
-        {"id": "One-shot (Malo)", "plantilla": PROMPT_ONE_SHOT_MALO, "tokens": 20, "mapear": False},
+        # {"id": "One-shot (Malo)", "plantilla": PROMPT_ONE_SHOT_MALO, "tokens": 20, "mapear": False},
         {"id": "One-shot (Bueno)", "plantilla": PROMPT_ONE_SHOT_BUENO, "tokens": 1, "mapear": True},
         {"id": "One-shot (Mejorado)", "plantilla": PROMPT_ONE_SHOT_MEJORADO, "tokens": 1, "mapear": True},
-        {"id": "Few-shot (Malo)", "plantilla": PROMPT_FEW_SHOT_MALO, "tokens": 15, "mapear": False},
+        # {"id": "Few-shot (Malo)", "plantilla": PROMPT_FEW_SHOT_MALO, "tokens": 15, "mapear": False},
         {"id": "Few-shot (Bueno)", "plantilla": PROMPT_FEW_SHOT_BUENO, "tokens": 1, "mapear": True},
         {"id": "Few-shot (Mejorado)", "plantilla": PROMPT_FEW_SHOT_MEJORADO, "tokens": 1, "mapear": True}
     ]
