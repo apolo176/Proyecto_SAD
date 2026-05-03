@@ -70,7 +70,7 @@ En un primer vistazo se ve que tenemos más problemas que puntos fuertes:
 ![Evolución Anual, Media Bayesiana](Fotos-Informe/5.png)
 
 ## Spotify
-Spotify tiene una nube de palabras más neutras, aunque tiene muchas palabras completamente negativas se salva en más de un solo aspecto:
+Spotify tiene una nube de palabras más neutras, aunque tiene muchas palabras completamente negativas se salva en más que en un solo aspecto:
 - Puntos fuertes:
     - Accesibilidad y calidad general: devices, works, easy, experience, simple, platform... Estas palabras denotan que Spotify es una buena aplicación accesible y fácil de usar.
     - Recomendaciones y personalización: También se valora positivamente las recomendaciones de la aplicación y la capacidad de hacer mixes a medida.
