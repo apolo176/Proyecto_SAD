@@ -37,6 +37,15 @@ Los hombres y las mujeres tienen la misma tendencia negativa a la hora de votar,
 ---
 
 # Evolución por países
+Este gráfico muestra la tendencia de cada país sobre que empresa prefiere. Se grafican las superficies de las superficies en función de un coeficiente que se calcula de la siguiente forma:
+
+|MediaSpotify|-|MediaAppleMusic|
+
+Como la media de cada empresa puede ir  de \[0,5\] (0 es que no hay reviews, y el resto es la puntuación), el coeficiente irá de \[-5,5\], siendo -5 totalmente a favor de AppleMusic, 5 totalmente a facor de Spotify y 0 empate.
+
+**Apunte**: Esta forma de medir a que empresa prefiere cada país no demuestra lo positivo o negativo de cada review, se representa igual un (5,3) que un (3,1), pero me parece que sigue siendo una buena representación por que no tiene sentido pintar España de un rojo intenso si AppleMusic tiene un 3, que es una nota neutra, aunque gane por un buen margen a Spotify.
+
+El mapa es interactivo y se puede elegir que año mostrar de 2008 a 2025, además se puede ver una sección general que tiene en cuenta las reviews de todos los años (No la he subido por que gana Spotify por 0.2,0.15 en todos los países menos en Portugal que gana AppleMusic por -0.1, y un empate enseña bastante poco).
 
 ![Evolución Anual, Media Bayesiana](Fotos-Informe/3.png)
 ![Evolución Anual, Media Bayesiana](Fotos-Informe/4.png)
