@@ -1,6 +1,6 @@
 # 🚀 Proyecto SAD Grupal
 
-**Análisis de sentimientos de reseñas de plataformas musicales (Spotify, Apple Music, Tidal, SoundCloud)**
+**Análisis de sentimientos de reseñas de plataformas musicales (Apple Music y Spotify)**
 
 ---
 
@@ -25,6 +25,12 @@ Proyecto_SAD/
 │       └── test_generativo.py     # Evaluación del modelo generativo
 │
 ├── data/                        # Datasets (no versionados)
+|   ├── AppleMusic_Limpio.csv    # Dataset de Apple Music procesado
+|   ├── Spotify_Limpio.csv       # Dataset de Spotify procesado
+|   ├── auxiliarClasificacion/   # Resultados de los ejercicios de clasificación
+|   ├── auxiliarGenerativo/      # Descripción del proceso generativo
+|   └── auxiliarTableau/         # Datasets extraídos para gráficas específicas y los scripts que los generan
+| 
 ├── modelos/                     # Modelos entrenados .pkl (auto-generados)
 ├── resultados/                  # Outputs generados
 │   ├── clustering_AppleMusic/
@@ -93,7 +99,7 @@ python -m src.analysis.test_generativo
 | Líder Clasificación | Modelos clásicos | `src/models/train.py`, `src/models/test.py`, `config.json`                                      |
 | Líder Generativo | Ollama + prompts | `src/analysis/generativo.py`, `src/analysis/test_generativo.py`, `src/data/balancear_con_ia.py` |
 | Líder Clustering | Análisis LDA | `src/analysis/clustering.py`                                                                    |
-| Líder Visualización | Tableau | `resultados/*.csv`                                                                              |
+| Líder Visualización | Tableau | `resultados/*.csv`, `data/auxiliarTableau/AppleMusic/*`, `data/auxiliarTableau/Spotify`           |
 
 ---
 
