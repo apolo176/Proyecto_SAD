@@ -78,6 +78,7 @@ Spotify tiene una nube de palabras más neutras, aunque tiene muchas palabras co
     - Suscripciones y Coste: La palabra más grande es claramente premium, aunque esta tiene una polaridad aproximada de -0.6, lo que indica que es mayoritariamente negativa pero hay usuarios que la valoran. Es decir, la mayoría de usuarios se quejan de las funciones que están reservadas a usuarios premium y dichos usuarios valoran positivamente las funciones que les facilita su plan.
     - Shuffle obligatorio y no poder saltar anuncios: Palabras como shuffle y skip demuestran que estas funciones son bastante molestas para los usuarios gratuitos.
     - Errores generales y actualizaciones: Crashing, update... Hay actualizaciones con problemas técnicos.
+
 ![Evolución Anual, Media Bayesiana](Fotos-Informe/6.png)
 
 ## Conclusiones
