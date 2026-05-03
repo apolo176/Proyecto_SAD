@@ -1,0 +1,232 @@
+Entrenamiento de modelos tradicionales:
+
+(explicación de por qué las proporciones de % para los datasets: según Gemini, al tener 15000 instancias, se recomienda dejar más % para train y menos en dev y test, por el tema de cantidades totales de instancias. Recomendado: TRAIN/DEV/TEST: 80/10/10 (se hace primero 90/10 del total para train/test, y luego del 90 de train, se hace el 12% para dev, para conseguir aproximadente 10% del total para dev) 
+
+PRUEBA 1: TRAIN 88%, DEV 12%, NO OVERSAMPLING.
+config.json usado: 
+
+{
+    "general": {
+        "random_state": 42,
+        "column": "sentiment",
+        "text_features": ["review"],
+        "drop_features": ["reviewId", "score", "location", "date", "App", "gender"],
+        "language": "english",
+        "data": {
+            "raw_file": "data/AppleMusic.csv",
+            "train_dev": "data/train.csv",
+            "dev_file": null,
+            "test": "data/test.csv"
+        }
+    },
+    "clustering": {
+         "num_topics_range": {
+            "min": 2,
+            "max_positivo": 7,
+            "max_negativo": 7
+        },
+        "name": "AppleMusic",
+        "passes": 6,
+        "coherence_metric": "c_v",
+        "output_dir": "resultados/clustering",
+        "text_col": "review",
+        "data": {
+            "train_dev": "data/AppleMusic.csv",
+            "test": "data/test.csv"
+        }
+    },
+    "preprocessing": {
+        "dev_size": 0.12,
+        "text_process": "tf_idf",
+        "sampling": "",
+        "impute_strategy_numeric": "mean",
+        "impute_strategy_categorical": "most_frequent",
+        "scaling": "minmax"
+    },
+    "train": {
+        "cpu": 14,
+        "scoring": "f1_macro",
+        "cv_folds": 5,
+        "modelos": [
+            {
+                "knn": true,
+                "modelo_output": "modelos/knn_BestModel.pkl",
+                "parametros": {
+                    "clasificador__n_neighbors": {"min": 1, "max": 15, "step": 2},
+                    "clasificador__weights": ["uniform", "distance"],
+                    "clasificador__metric": ["euclidean", "manhattan"]
+                }
+            },
+            {
+                "decision_tree": true,
+                "modelo_output": "modelos/decision_tree_BestModel.pkl",
+                "parametros": {
+                    "clasificador__criterion": ["gini", "entropy"],
+                    "clasificador__max_depth": {"min": 5, "max": 20, "step": 5},
+                    "clasificador__min_samples_split": {"min": 2, "max": 10, "step": 2},
+                    "clasificador__min_samples_leaf": {"min": 1, "max": 5, "step": 1}
+                }
+            },
+            {
+                "random_forest": true,
+                "modelo_output": "modelos/random_forest_BestModel.pkl",
+                "parametros": {
+                    "clasificador__n_estimators": {"min": 50, "max": 250, "step": 50},
+                    "clasificador__max_depth": [null, 10, 20],
+                    "clasificador__min_samples_split": {"min": 2, "max": 10, "step": 2},
+                    "clasificador__min_samples_leaf": {"min": 1, "max": 5, "step": 1},
+                    "clasificador__bootstrap": [true, false]
+                }
+            },
+            {
+                "multinomial_nb": true,
+                "modelo_output": "modelos/multinomial_nb_BestModel.pkl",
+                "parametros": {
+                    "clasificador__alpha": [0.01, 0.1, 0.5, 1.0, 5.0, 10.0],
+                    "clasificador__fit_prior": [true, false]
+                }
+            },
+            {
+                "categorical_nb": false,
+                "modelo_output": "modelos/categorical_nb_BestModel.pkl",
+                "parametros": {
+                    "preprocessor__num__n_bins": [3, 5, 8],
+                    "preprocessor__num__strategy": ["uniform", "quantile"],
+                    "clasificador__alpha": [0.1, 0.5, 1.0, 2.0],
+                    "clasificador__min_categories": [100]
+                }
+            }
+        ]
+    },
+    "test": {
+        "test_split": 0.10,
+        "metricas_output": "resultados/metricas_modelos.csv",
+        "predicciones_output": "resultados/predicciones_test.csv"
+    },
+    "generative": {
+        "n_generations": 300,
+        "eval_dev_limit": null,
+        "eval_test_limit": null
+    }
+}
+
+RESULTADOS DEV MACRO F-SCORE:
+KNN:  0.4352
+DECISION TREE: 0.4801
+RANDOM FOREST: 0.5461
+MULTIBINOMIAL NB: 0.6031
+CATEGORICAL NB: No se usa, puesto que no hay atributos numéricos a usar.
+
+
+PRUEBA 2: TRAIN 88%, DEV 12%, OVERSAMPLING de SKLEARN.
+config.json utilizado:
+
+{
+    "general": {
+        "random_state": 42,
+        "column": "sentiment",
+        "text_features": ["review"],
+        "drop_features": ["reviewId", "score", "location", "date", "App", "gender"],
+        "language": "english",
+        "data": {
+            "raw_file": "data/AppleMusic.csv",
+            "train_dev": "data/train.csv",
+            "dev_file": null,
+            "test": "data/test.csv"
+        }
+    },
+    "clustering": {
+         "num_topics_range": {
+            "min": 2,
+            "max_positivo": 7,
+            "max_negativo": 7
+        },
+        "name": "AppleMusic",
+        "passes": 6,
+        "coherence_metric": "c_v",
+        "output_dir": "resultados/clustering",
+        "text_col": "review",
+        "data": {
+            "train_dev": "data/AppleMusic.csv",
+            "test": "data/test.csv"
+        }
+    },
+    "preprocessing": {
+        "dev_size": 0.12,
+        "text_process": "tf_idf",
+        "sampling": "oversampling",
+        "impute_strategy_numeric": "mean",
+        "impute_strategy_categorical": "most_frequent",
+        "scaling": "minmax"
+    },
+    "train": {
+        "cpu": 14,
+        "scoring": "f1_macro",
+        "cv_folds": 5,
+        "modelos": [
+            {
+                "knn": true,
+                "modelo_output": "modelos/knn_BestModel.pkl",
+                "parametros": {
+                    "clasificador__n_neighbors": {"min": 1, "max": 15, "step": 2},
+                    "clasificador__weights": ["uniform", "distance"],
+                    "clasificador__metric": ["euclidean", "manhattan"]
+                }
+            },
+            {
+                "decision_tree": true,
+                "modelo_output": "modelos/decision_tree_BestModel.pkl",
+                "parametros": {
+                    "clasificador__criterion": ["gini", "entropy"],
+                    "clasificador__max_depth": {"min": 5, "max": 20, "step": 5},
+                    "clasificador__min_samples_split": {"min": 2, "max": 10, "step": 2},
+                    "clasificador__min_samples_leaf": {"min": 1, "max": 5, "step": 1}
+                }
+            },
+            {
+                "random_forest": true,
+                "modelo_output": "modelos/random_forest_BestModel.pkl",
+                "parametros": {
+                    "clasificador__n_estimators": {"min": 50, "max": 250, "step": 50},
+                    "clasificador__max_depth": [null, 10, 20],
+                    "clasificador__min_samples_split": {"min": 2, "max": 10, "step": 2},
+                    "clasificador__min_samples_leaf": {"min": 1, "max": 5, "step": 1},
+                    "clasificador__bootstrap": [true, false]
+                }
+            },
+            {
+                "multinomial_nb": true,
+                "modelo_output": "modelos/multinomial_nb_BestModel.pkl",
+                "parametros": {
+                    "clasificador__alpha": [0.01, 0.1, 0.5, 1.0, 5.0, 10.0],
+                    "clasificador__fit_prior": [true, false]
+                }
+            },
+            {
+                "categorical_nb": false,
+                "modelo_output": "modelos/categorical_nb_BestModel.pkl",
+                "parametros": {
+                    "preprocessor__num__n_bins": [3, 5, 8],
+                    "preprocessor__num__strategy": ["uniform", "quantile"],
+                    "clasificador__alpha": [0.1, 0.5, 1.0, 2.0],
+                    "clasificador__min_categories": [100]
+                }
+            }
+        ]
+    },
+    "test": {
+        "test_split": 0.10,
+        "metricas_output": "resultados/metricas_modelos.csv",
+        "predicciones_output": "resultados/predicciones_test.csv"
+    },
+    "generative": {
+        "n_generations": 300,
+        "eval_dev_limit": null,
+        "eval_test_limit": null
+    }
+}
+
+KNN:
+DECISION TREE:
+RANDOM FOREST:
+MULTIBINOMIAL NB:

@@ -1,0 +1,369 @@
+--------------------------------------------------------------------------------
+ÍNDICE
+--------------------------------------------------------------------------------
+1. Los 9 prompts diseñados: evolución y justificación
+2. Script 1 — generativo.py: benchmarking automático de prompts
+3. Script 2 — test_generativo.py: evaluación final contra modelos clásicos
+4. Script 3 — balancear_con_ia.py: oversampling generativo sin Data Leakage
+5. Parámetros de config.json relacionados con la parte generativa
+6. Archivos de salida generados
+7. Decisiones técnicas clave
+8. Cómo ejecutar los scripts (orden correcto)
+--------------------------------------------------------------------------------
+
+
+================================================================================
+1. LOS 9 PROMPTS DISEÑADOS: EVOLUCIÓN Y JUSTIFICACIÓN
+================================================================================
+
+Se diseñaron y probaron 9 prompts agrupados en tres estrategias de Prompt
+Engineering. El objetivo es mostrar la EVOLUCIÓN desde un prompt malo hasta
+el mejor posible, demostrando el impacto de cada decisión de diseño.
+
+Las etiquetas de clasificación son siempre:
+  A = POSITIVO
+  B = NEUTRO
+  C = NEGATIVO
+
+---- ESTRATEGIA ZERO-SHOT (sin ejemplos) ----------------------------------------
+
+PROMPT_ZERO_SHOT_MALO:
+  Problema: No especifica el formato de salida ni las categorías exactas.
+  El modelo puede responder con "Es negativo", "Creo que...", oraciones largas,
+  etc. Imposible mapear automáticamente a A/B/C.
+
+PROMPT_ZERO_SHOT_NORMAL:
+  Mejora: Especifica las 3 categorías y pide "solo la palabra".
+  Problema: Sigue sin forzar el formato de 1 token. El modelo a veces añade
+  frases como "El sentimiento es: POSITIVO porque...".
+
+PROMPT_ZERO_SHOT_BUENO:
+  Mejora final: Asigna un rol ("actúa como experto"), define exactamente las
+  categorías A/B/C con su equivalencia, y añade la regla explícita de responder
+  ÚNICAMENTE la letra. Con num_predict=1 el modelo no puede escribir nada más.
+  Este es el prompt zero-shot que entra en el benchmarking serio.
+
+---- ESTRATEGIA ONE-SHOT (1 ejemplo por clase) -----------------------------------
+
+PROMPT_ONE_SHOT_MALO:
+  Problema: El ejemplo proporcionado es de baja calidad ("creo que es negativo")
+  y el formato es inconsistente. Enseña al modelo un comportamiento incorrecto.
+
+PROMPT_ONE_SHOT_BUENO:
+  Mejora: Mantiene la estructura A/B/C, incluye un ejemplo real negativo bien
+  formateado. El modelo entiende el patrón entrada→letra.
+
+PROMPT_ONE_SHOT_MEJORADO:
+  Mejora adicional: Proporciona un ejemplo de CADA clase (positivo, neutro,
+  negativo) en lugar de solo uno negativo. Esto reduce la ambigüedad y da al
+  modelo contexto completo sobre el espacio de salidas.
+
+---- ESTRATEGIA FEW-SHOT (múltiples ejemplos) ------------------------------------
+
+PROMPT_FEW_SHOT_MALO:
+  Problema: Usa lenguaje informal ("molan", "dan igual", "un rollo") y no
+  define las clases en términos técnicos. Los ejemplos son demasiado simples
+  y no cubren casos reales de reseñas de apps.
+
+PROMPT_FEW_SHOT_BUENO:
+  Mejora: 3 ejemplos reales de reseñas de apps de música (negativo, positivo,
+  neutro), manteniendo la estructura A/B/C y la regla de respuesta única.
+
+PROMPT_FEW_SHOT_MEJORADO:
+  Mejor versión: 5 ejemplos que cubren casos límite importantes:
+    - Reseña con mezcla (crítica + elogio) → A
+    - Queja funcional clara → C
+    - Cobro doble (queja fuerte) → C
+    - Neutral descriptiva → B
+    - Satisfacción con actualización → A
+  Esto enseña al modelo a manejar ambigüedad, que es donde los LLMs suelen
+  fallar sin guía.
+
+RESUMEN DE LA EVOLUCIÓN:
+  Malo → Normal → Bueno → Mejorado
+  Sin formato → Con categorías → Con rol + regla → Con ejemplos ricos
+
+
+================================================================================
+2. SCRIPT 1 — generativo.py: BENCHMARKING AUTOMÁTICO DE PROMPTS
+================================================================================
+
+PROPÓSITO:
+  Evaluar sistemáticamente los 9 prompts sobre el conjunto Dev y seleccionar
+  automáticamente el mejor según F1-Macro. Produce el CSV entregable con toda
+  la trazabilidad del proceso.
+
+FLUJO DETALLADO:
+
+  Paso 1 — Carga de configuración y datos:
+    Lee config.json para obtener la ruta del dataset (data/AppleMusic.csv),
+    la columna de texto ("review"), la columna objetivo ("sentiment") y los
+    parámetros de evaluación (eval_dev_limit).
+
+  Paso 2 — Split Train/Dev:
+    Replica EXACTAMENTE el mismo split que realiza train.py del equipo clásico:
+      - test_size = dev_size del config (0.12, es decir, 12% para Dev)
+      - stratify = columna de sentimiento (proporciones iguales en Train y Dev)
+      - random_state = 42 (reproducibilidad garantizada)
+
+  Paso 3 — Inferencia sobre Dev (para los 9 prompts):
+    Para cada texto del Dev y cada uno de los 9 prompts:
+      a) Se formatea el prompt con el texto real (usando .format(texto=...))
+      b) Se envía a Ollama con la función interactuar_ollama()
+      c) Para los prompts mapeables (los "buenos"): se extrae el primer
+         carácter de la respuesta, se convierte a mayúscula, y se mapea:
+           A → POSITIVO, B → NEUTRO, C → NEGATIVO
+         Si el carácter no es A/B/C, se registra como ERROR_DE_MAPEO
+      d) Para los prompts no mapeables (los "malos"): se guarda la respuesta
+         en crudo (truncada a 1 línea)
+      e) Se guarda cada par (prompt, entrada, salida) para el CSV
+
+  Paso 4 — Cálculo de F1-Macro:
+    Solo para los prompts mapeables (los que producen A/B/C):
+      - Se compara la lista de predicciones con las etiquetas reales del Dev
+      - Se calcula sklearn.metrics.f1_score(average='macro', zero_division=0)
+      - Se imprime el resultado en consola
+
+  Paso 5 — Selección automática del ganador:
+    max(puntuaciones_f1, key=puntuaciones_f1.get)
+    El prompt con mayor F1-Macro se etiqueta como "[MEJOR RESULTADO]".
+
+  Paso 6 — Generación del CSV:
+    Se crea resultados_generativos.csv con 4 columnas:
+      - "Modelo y Tamaño": nombre del experimento (el mejor lleva [MEJOR RESULTADO])
+      - "Prompt Empleado": el texto completo del prompt con el texto real insertado
+      - "Entrada": el texto de la reseña
+      - "Salida": la predicción del modelo (A/B/C mapeada o texto en crudo)
+    El mejor prompt aparece AL PRINCIPIO del CSV (requisito del enunciado).
+
+
+================================================================================
+3. SCRIPT 2 — test_generativo.py: EVALUACIÓN FINAL CONTRA MODELOS CLÁSICOS
+================================================================================
+
+FLUJO DETALLADO:
+
+  Paso 1 — Recuperación dinámica del mejor prompt:
+    Lee resultados_generativos.csv y busca la fila con "[MEJOR RESULTADO]".
+    Reconstruye la plantilla del prompt reemplazando el texto específico
+    usado en Dev por el placeholder {texto}:
+      prompt_ganador = prompt_usado.replace(entrada_usada, "{texto}")
+    Esto garantiza que se usa EXACTAMENTE el mismo prompt que ganó en Dev,
+    sin hardcodear nada.
+
+  Paso 2 — Extracción del nombre del experimento
+
+  Paso 3 — Carga del conjunto de TEST
+
+  Paso 4 — Inferencia con Ollama sobre Test:
+    Aplica el prompt ganador a cada texto del Test con num_predict=1.
+    Mismo proceso de limpieza y mapeo A/B/C que en generativo.py.
+
+  Paso 5 — Evaluación completa:
+    Calcula con sklearn:
+      - Accuracy
+      - F1-Macro, F1-Micro, F1-Weighted
+      - Precision Macro, Recall Macro
+      - F1 por clase (lista)
+      - Matriz de confusión
+      - Classification report completo
+    Imprime todo con el mismo formato visual que test.py del equipo clásico.
+
+  Paso 6 — Integración en el ranking global:
+    Lee resultados/metricas_modelos.csv (generado por el equipo clásico).
+    Añade una fila con las métricas del modelo generativo.
+    Ordena por f1_macro descendente.
+    Guarda el CSV actualizado.
+    Imprime el ranking completo: clásicos vs. generativo en la misma tabla.
+
+
+================================================================================
+4. SCRIPT 3 — balancear_con_ia.py: OVERSAMPLING GENERATIVO SIN DATA LEAKAGE
+================================================================================
+
+CONCEPTO CLAVE — DATA LEAKAGE:
+  El Data Leakage ocurre cuando información del conjunto de validación o test
+  "contamina" el entrenamiento, produciendo métricas infladas y un modelo que
+  no generalizará bien en producción.
+  
+  Si hiciéramos oversampling ANTES del split, las paráfrasis generadas de
+  textos del Dev podrían acabar en el Train, y el modelo "vería" variantes
+  de sus datos de validación durante el entrenamiento. Esto invalida la
+  evaluación.
+
+SOLUCIÓN IMPLEMENTADA:
+  El split Train/Dev se realiza ANTES de cualquier generación. Las paráfrasis
+  solo se generan sobre textos que pertenecen al Train, y el Dev permanece
+  completamente intacto.
+
+FLUJO DETALLADO:
+
+  Paso 1 — Split antes de todo:
+    Mismo split que generativo.py y train.py:
+      test_size=0.12, stratify=sentiment, random_state=42
+    A partir de este punto, solo se trabaja con df_train.
+
+  Paso 2 — Detección automática de la clase minoritaria
+
+  Paso 3 — Aplicación del límite de generación
+
+  Paso 4 — Generación de paráfrasis:
+    Para cada una de las 'objetivo_generaciones' iteraciones:
+      a) Se elige un texto de la clase minoritaria AL AZAR (con replacement).
+      b) Se construye el prompt PROMPT_PARAFRASIS con ese texto.
+      c) Se envía a Ollama con temperature=0.8 (variedad) y num_predict=100.
+      d) La respuesta se limpia:
+           - Reemplaza \n y \r por espacios (evita romper el CSV)
+           - Aplica .strip() para eliminar espacios sobrantes
+      e) Se guarda el par (nueva_review, clase_minoritaria).
+
+  El prompt de paráfrasis incluye:
+    - Instrucción de mantener el MISMO sentimiento.
+    - Instrucción de usar INGLÉS (el dataset está en inglés).
+    - Regla de formato: un único párrafo continuo, sin saltos de línea.
+    - El texto original como referencia.
+
+  Paso 5 — Exportación de archivos:
+    - resultados/parafrases_generadas_ollama.csv:
+        Solo las nuevas reseñas sintéticas (review + sentiment).
+        Entregable directo exigido por el enunciado del proyecto.
+    - data/train_SOLO_balanceado_ia.csv:
+        Train original + paráfrasis generadas. Listo para que el equipo
+        de clasificación clásica lo use como input de entrenamiento.
+    - data/dev_intacto.csv:
+        El Dev tal cual salió del split, sin ninguna modificación.
+        Garantía de que la evaluación será justa.
+
+
+================================================================================
+5. PARÁMETROS DE CONFIG.JSON RELACIONADOS CON LA PARTE GENERATIVA
+================================================================================
+
+Todos los parámetros generativos están bajo la clave "generative":
+
+  "generative": {
+    "n_generations": 300,
+    "eval_dev_limit": null,
+    "eval_test_limit": null
+  }
+
+n_generations (int, default: 300):
+  Número máximo de paráfrasis a generar en balancear_con_ia.py.
+  Si la diferencia entre clases es menor que este valor, se genera
+  exactamente la diferencia (sin excederse).
+  Bajar este valor acelera la ejecución en pruebas (ej. 50).
+
+eval_dev_limit (int o null, default: null):
+  Número de instancias del Dev a evaluar en generativo.py.
+  null = evalúa el Dev completo (~12% del dataset total).
+  Un número (ej. 100) = muestra estratificada de ese tamaño.
+  Útil para pruebas rápidas antes de la ejecución final.
+
+eval_test_limit (int o null, default: null):
+  Igual que eval_dev_limit pero para el Test en test_generativo.py.
+  null = evalúa el Test completo.
+
+================================================================================
+6. ARCHIVOS DE SALIDA GENERADOS
+================================================================================
+
+resultados/resultados_generativos.csv
+  - Qué contiene: Todos los experimentos de prompt engineering.
+    4 columnas: "Modelo y Tamaño", "Prompt Empleado", "Entrada", "Salida".
+  - Orden: El mejor prompt (con [MEJOR RESULTADO]) aparece primero.
+  - Uso: Entregable directo exigido por el enunciado. También lo lee
+    test_generativo.py para extraer la plantilla ganadora.
+
+resultados/parafrases_generadas_ollama.csv
+  - Qué contiene: Las reseñas sintéticas generadas por Llama 3.
+    2 columnas: "review" (texto generado) y "sentiment" (clase minoritaria).
+  - Uso: Entregable directo. También puede integrarse en el pipeline clásico.
+
+data/train_SOLO_balanceado_ia.csv
+  - Qué contiene: Dataset de entrenamiento original + paráfrasis.
+    Listo para sustituir al train.csv en el pipeline clásico.
+
+data/dev_intacto.csv
+  - Qué contiene: El conjunto Dev sin ninguna modificación.
+    Garantiza evaluación justa si se usa junto con el train balanceado.
+
+resultados/metricas_modelos.csv (actualizado por test_generativo.py)
+  - Qué contiene: Ranking de todos los modelos (clásicos + generativo).
+    Columnas: modelo, accuracy, f1_macro, f1_micro, f1_weighted,
+              precision_macro, recall_macro, f1_per_class.
+
+
+================================================================================
+7. DECISIONES TÉCNICAS CLAVE
+================================================================================
+
+DECISIÓN 1 — num_predict: 1 para clasificación
+  Forzar al modelo a emitir solo 1 token (A, B o C) en lugar de una oración
+  completa reduce el tiempo de inferencia de ~2-3 segundos por texto a
+  ~0.2-0.5 segundos. En un Dev de 500 textos × 9 prompts = 4500 inferencias,
+  esto supone la diferencia entre horas y minutos de ejecución.
+
+DECISIÓN 2 — temperature: 0.0 para clasificación
+  La temperatura 0 hace que el modelo elija siempre el token más probable,
+  eliminando aleatoriedad. Esto garantiza que si ejecutamos el mismo prompt
+  dos veces, obtenemos la misma predicción (reproducibilidad).
+
+DECISIÓN 3 — temperature: 0.8 para paráfrasis
+  Para la generación de texto sintético necesitamos variedad. Una temperatura
+  más alta hace que el modelo explore más opciones léxicas, produciendo
+  paráfrasis genuinamente distintas al original.
+
+DECISIÓN 4 — Mismos splits que el equipo clásico
+  Usar exactamente los mismos parámetros de train_test_split (test_size,
+  stratify, random_state) que usa train.py del equipo clásico asegura que:
+  a) El modelo generativo y los modelos clásicos evalúan sobre el mismo Dev.
+  b) Las comparativas de F1-Macro en metricas_modelos.csv son válidas.
+  c) No hay contaminación cruzada entre los experimentos.
+
+DECISIÓN 5 — Limpieza de texto antes de guardar en CSV
+  Las respuestas de Ollama pueden contener saltos de línea (\n, \r) que
+  romperían el formato CSV. Se limpian SIEMPRE antes de escribir al disco.
+
+DECISIÓN 6 — Reconstrucción dinámica del prompt ganador
+  test_generativo.py no hardcodea ningún prompt. Lee el CSV, toma la primera
+  fila del mejor experimento, y reconstruye la plantilla sustituyendo el texto
+  concreto por {texto}. Esto hace el sistema robusto: si cambia el ganador
+  (porque se añaden más prompts a generativo.py), test_generativo.py funciona
+  sin modificaciones.
+
+
+================================================================================
+8. CÓMO EJECUTAR LOS SCRIPTS (ORDEN CORRECTO)
+================================================================================
+
+PRERREQUISITOS:
+  1. Tener Ollama instalado y ejecutándose en segundo plano.
+  2. Haber descargado el modelo: ejecutar en terminal → ollama run llama3
+  3. Tener el dataset en data/AppleMusic.csv
+  4. Tener el conjunto de test en data/test.csv
+
+ORDEN DE EJECUCIÓN:
+
+  PASO 1 — Benchmarking de prompts (ejecutar UNA VEZ, es el más lento):
+    python generativo.py
+    Tiempo estimado: 30-90 minutos según el tamaño del Dev y el hardware.
+    Para pruebas rápidas, configurar eval_dev_limit: 100 en config.json.
+    Output: resultados/resultados_generativos.csv
+
+  PASO 2 — Generación de paráfrasis para balanceo (ejecutar UNA VEZ):
+    python balancear_con_ia.py
+    Tiempo estimado: 15-45 minutos según n_generations y el hardware.
+    Para pruebas rápidas, configurar n_generations: 50 en config.json.
+    Output: resultados/parafrases_generadas_ollama.csv
+             data/train_SOLO_balanceado_ia.csv
+             data/dev_intacto.csv
+
+  PASO 3 — Evaluación final en Test (ejecutar el día de la presentación):
+    Requiere que el profesor proporcione data/test.csv.
+    python test_generativo.py
+    Tiempo estimado: 10-30 minutos.
+    Output: actualización de resultados/metricas_modelos.csv
+
+NOTA: Los pasos 1 y 2 son independientes entre sí y pueden ejecutarse en
+cualquier orden. El paso 3 requiere que el paso 1 haya finalizado primero
+(necesita resultados_generativos.csv para extraer el prompt ganador).
