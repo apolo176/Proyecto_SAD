@@ -31,6 +31,8 @@ for archivo_res, archivo_top in parejas_archivos:
         
         if 'General' in archivo_res:
             df_cruzado['Periodo'] = 'General'
+        elif '2008_2014' in archivo_res:
+            df_cruzado['Periodo'] = '2008-2014'
         elif '2015_2018' in archivo_res:
             df_cruzado['Periodo'] = '2015-2018'
         elif '2019_2022' in archivo_res:
