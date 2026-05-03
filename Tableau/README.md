@@ -6,6 +6,7 @@
 - [Análisis Semántico; Puntos fuertes y débiles](#análisis-semántico-puntos-fuertes-y-débiles)
   - [Apple Music](#apple-music)
   - [Spotify](#spotify)
+  - [Conclusiones](#conclusiones)
 - [Clustering y tópicos; Análisis en profundidad](#clustering-y-tópicos-análisis-en-profundidad)
 
 ---
@@ -54,15 +55,40 @@ El mapa es interactivo y se puede elegir que año mostrar de 2008 a 2025, ademá
 ---
 
 # Análisis Semántico; Puntos fuertes y débiles
+El análisis semántico consiste en darle una polaridad a una palabra para analizar su impacto. La polaridad va de -1 a 1, siendo una palabra con polaridad -1 totalmente negativa y otra con 1 totalmente positiva. En estos gráficos también se tiene en cuenta la frecuencia de la palabra, cuanto más se menciona en las reviews más grande aparece en el gráfico.
 
+Como hay muchas palabras (150 por defecto), he añadido un slide interactivo para elegir la cantidad de palabras y poder "hacer zoom" en las más importantes.
 ## Apple Music
+En un primer vistazo se ve que tenemos más problemas que puntos fuertes:
+- Puntos fuertes:
+    - Calidad de audio: En el apartado de clustering se ve en detalle que es la característica principal que valoran los usuarios.
+- Problemas:
+    - Política de Apple y mala adaptación multiplataforma: La aplicación no funciona bien en dispositivos que no son de apple.
+    - Bugs y problemas técnicos generales: Aparecen muchas palabras como service, access, update, account, sign, crashing...
+    - Precios y problemas de facturación: Aparecen palabras como subscription, payment, money, trial... Apple Music no tiene una versión gratuita con funciones limitadas como Spotify, y muchas reviews se quejan de esta politica de empresa.
 
 ![Evolución Anual, Media Bayesiana](Fotos-Informe/5.png)
 
 ## Spotify
-
+Spotify tiene una nube de palabras más neutras, aunque tiene muchas palabras completamente negativas se salva en más de un solo aspecto:
+- Puntos fuertes:
+    - Accesibilidad y calidad general: devices, works, easy, experience, simple, platform... Estas palabras denotan que Spotify es una buena aplicación accesible y fácil de usar.
+    - Recomendaciones y personalización: También se valora positivamente las recomendaciones de la aplicación y la capacidad de hacer mixes a medida.
+- Problemas:
+    - Suscripciones y Coste: La palabra más grande es claramente premium, aunque esta tiene una polaridad aproximada de -0.6, lo que indica que es mayoritariamente negativa pero hay usuarios que la valoran. Es decir, la mayoría de usuarios se quejan de las funciones que están reservadas a usuarios premium y dichos usuarios valoran positivamente las funciones que les facilita su plan.
+    - Shuffle obligatorio y no poder saltar anuncios: Palabras como shuffle y skip demuestran que estas funciones son bastante molestas para los usuarios gratuitos.
+    - Errores generales y actualizaciones: Crashing, update... Hay actualizaciones con problemas técnicos.
 ![Evolución Anual, Media Bayesiana](Fotos-Informe/6.png)
 
+## Conclusiones
+Ambos tienen problemas estructurales de negocio y problemas con las actualizaciones.
+Mejoras propuestas:
+- Apple Music:
+    - Ser más flexible con el servicio multiplataforma y mejorar la experiencia de los dispositivos que no son de apple.
+    - Implementar un plan gratuito con anuncios para reducir migraciones a Spotify.
+- Spotify:
+    - Implementar funcionalidades de audio sin pérdida para comerle terreno a Apple Music.
+    - Reducir las restricciones de las cuentas gratuitas.
 
 ---
 
