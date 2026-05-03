@@ -334,9 +334,21 @@ def entrenar_modelo(modelo_config: dict, X_train, X_dev, y_train, y_dev, config:
     # Procesar parámetros (expandir rangos min/max/step)
     params_raw = modelo_config.get('parametros', {})
     params = procesar_parametros(params_raw)
-    
+
+    valid_params = pipeline.get_params().keys()
+    params_filtrados = {}
+
+    for param_name, param_value in params.items():
+        if param_name in valid_params:
+            params_filtrados[param_name] = param_value
+        else:
+            print(f"   ⚠️ Ignorando '{param_name}' (no aplica a la estructura actual de datos)")
+    # ==============================================
+
     print(f"🔍 Configuración de GridSearchCV:")
-    print(f"   - Parámetros a probar: {len(list(params.values())[0]) if params else 0} combinaciones por parámetro")
+    # Cambiamos params por params_filtrados en el print
+    print(
+        f"   - Parámetros a probar: {len(list(params_filtrados.values())[0]) if params_filtrados else 0} combinaciones por parámetro")
     print(f"   - Cross-validation: {config.get('cv_folds', 5)} folds")
     print(f"   - Scoring: {config.get('scoring', 'f1_macro')}")
     print(f"   - CPUs: {config.get('cpu', -1)}")
@@ -344,7 +356,7 @@ def entrenar_modelo(modelo_config: dict, X_train, X_dev, y_train, y_dev, config:
     # GridSearchCV
     grid_search = GridSearchCV(
         estimator=pipeline,
-        param_grid=params,
+        param_grid=params_filtrados,  # <-- IMPORTANTE: usar params_filtrados aquí
         cv=config.get('cv_folds', 5),
         scoring=config.get('scoring', 'f1_macro'),
         n_jobs=config.get('cpu', -1),

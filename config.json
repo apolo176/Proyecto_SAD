@@ -29,7 +29,7 @@
         }
     },
     "preprocessing": {
-        "dev_size": 0.25,
+        "dev_size": 0.12,
         "text_process": "tf_idf",
         "sampling": "oversampling",
         "impute_strategy_numeric": "mean",
@@ -37,7 +37,7 @@
         "scaling": "minmax"
     },
     "train": {
-        "cpu": 6,
+        "cpu": 14,
         "scoring": "f1_macro",
         "cv_folds": 5,
         "modelos": [
@@ -51,7 +51,7 @@
                 }
             },
             {
-                "decision_tree": false,
+                "decision_tree": true,
                 "modelo_output": "modelos/decision_tree_BestModel.pkl",
                 "parametros": {
                     "clasificador__criterion": ["gini", "entropy"],
@@ -61,7 +61,7 @@
                 }
             },
             {
-                "random_forest": false,
+                "random_forest": true,
                 "modelo_output": "modelos/random_forest_BestModel.pkl",
                 "parametros": {
                     "clasificador__n_estimators": {"min": 50, "max": 250, "step": 50},
@@ -72,7 +72,7 @@
                 }
             },
             {
-                "multinomial_nb": false,
+                "multinomial_nb": true,
                 "modelo_output": "modelos/multinomial_nb_BestModel.pkl",
                 "parametros": {
                     "clasificador__alpha": [0.01, 0.1, 0.5, 1.0, 5.0, 10.0],
