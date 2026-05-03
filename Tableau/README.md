@@ -17,7 +17,7 @@ Como cada año tiene una cantidad distinta de reviews y estas no están distribu
 M es la cantidad de reviews de las que nos "fiamos", los años con menos reviews que m son aplanados hacia la media global de todos los años para reducir el impacto de tener pocas reviews. (En la presentación se puede cambiar de forma interactiva)
 
 ## Lectura del gráfico
-Ambas empresas muestran la misma tendencia, un par de años iniciales donde se mantienen con una buena nota media y un declive constante todos los años.
+Ambas empresas muestran la misma tendencia, un par de años iniciales donde se mantienen con una buena nota media y un declive constante el resto de años.
 
 Hay sobretodo cuatro franjas importantes en el gráfico:
 - 2008-2014: Spotify no tiene competencia.
