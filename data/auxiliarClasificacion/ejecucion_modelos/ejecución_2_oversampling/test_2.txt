@@ -1,0 +1,175 @@
+══════════════════════════════════════════════════════════════════════
+                    PLANTILLA HÍBRIDA - EVALUACIÓN
+══════════════════════════════════════════════════════════════════════
+
+📖 Cargando configuración...
+
+📂 Cargando datos de test...
+✓ Datos cargados: 1500 filas, 7 columnas
+✓ Variable objetivo decodificada usando LabelEncoder guardado
+   - Muestras de test: 1500
+   - Features: 1
+
+🤖 Modelos a evaluar: 4
+   • modelos\decision_tree_BestModel.pkl
+   • modelos\knn_BestModel.pkl
+   • modelos\multinomial_nb_BestModel.pkl
+   • modelos\random_forest_BestModel.pkl
+
+──────────────────────────────────────────────────────────────────────
+📊 Evaluando: decision_tree
+──────────────────────────────────────────────────────────────────────
+
+📈 Métricas Globales:
+   • Accuracy:        0.6133
+   • F1 Macro:        0.4996
+   • F1 Micro:        0.6133
+   • F1 Weighted:     0.6032
+   • Precision Macro: 0.5582
+   • Recall Macro:    0.5124
+
+📊 F1 por Clase:
+   • Clase 0: 0.6942
+   • Clase 1: 0.2214
+   • Clase 2: 0.5833
+
+🔢 Matriz de Confusión:
+[[589  69  23]
+ [ 81  30  15]
+ [346  46 301]]
+
+📋 Reporte de Clasificación:
+              precision    recall  f1-score   support
+
+           0       0.58      0.86      0.69       681
+           1       0.21      0.24      0.22       126
+           2       0.89      0.43      0.58       693
+
+    accuracy                           0.61      1500
+   macro avg       0.56      0.51      0.50      1500
+weighted avg       0.69      0.61      0.60      1500
+
+
+──────────────────────────────────────────────────────────────────────
+📊 Evaluando: knn
+──────────────────────────────────────────────────────────────────────
+
+📈 Métricas Globales:
+   • Accuracy:        0.5807
+   • F1 Macro:        0.4410
+   • F1 Micro:        0.5807
+   • F1 Weighted:     0.5706
+   • Precision Macro: 0.4802
+   • Recall Macro:    0.4495
+
+📊 F1 por Clase:
+   • Clase 0: 0.5460
+   • Clase 1: 0.0959
+   • Clase 2: 0.6810
+
+🔢 Matriz de Confusión:
+[[288  70 323]
+ [ 25  13  88]
+ [ 61  62 570]]
+
+📋 Reporte de Clasificación:
+              precision    recall  f1-score   support
+
+           0       0.77      0.42      0.55       681
+           1       0.09      0.10      0.10       126
+           2       0.58      0.82      0.68       693
+
+    accuracy                           0.58      1500
+   macro avg       0.48      0.45      0.44      1500
+weighted avg       0.63      0.58      0.57      1500
+
+
+──────────────────────────────────────────────────────────────────────
+📊 Evaluando: multinomial_nb
+──────────────────────────────────────────────────────────────────────
+
+📈 Métricas Globales:
+   • Accuracy:        0.6980
+   • F1 Macro:        0.6042
+   • F1 Micro:        0.6980
+   • F1 Weighted:     0.7272
+   • Precision Macro: 0.6184
+   • Recall Macro:    0.6356
+
+📊 F1 por Clase:
+   • Clase 0: 0.7623
+   • Clase 1: 0.2757
+   • Clase 2: 0.7747
+
+🔢 Matriz de Confusión:
+[[510 131  40]
+ [ 44  59  23]
+ [103 112 478]]
+
+📋 Reporte de Clasificación:
+              precision    recall  f1-score   support
+
+           0       0.78      0.75      0.76       681
+           1       0.20      0.47      0.28       126
+           2       0.88      0.69      0.77       693
+
+    accuracy                           0.70      1500
+   macro avg       0.62      0.64      0.60      1500
+weighted avg       0.78      0.70      0.73      1500
+
+
+──────────────────────────────────────────────────────────────────────
+📊 Evaluando: random_forest
+──────────────────────────────────────────────────────────────────────
+
+📈 Métricas Globales:
+   • Accuracy:        0.7713
+   • F1 Macro:        0.6388
+   • F1 Micro:        0.7713
+   • F1 Weighted:     0.7740
+   • Precision Macro: 0.6369
+   • Recall Macro:    0.6413
+
+📊 F1 por Clase:
+   • Clase 0: 0.8151
+   • Clase 1: 0.2772
+   • Clase 2: 0.8240
+
+🔢 Matriz de Confusión:
+[[551  53  77]
+ [ 47  37  42]
+ [ 73  51 569]]
+
+📋 Reporte de Clasificación:
+              precision    recall  f1-score   support
+
+           0       0.82      0.81      0.82       681
+           1       0.26      0.29      0.28       126
+           2       0.83      0.82      0.82       693
+
+    accuracy                           0.77      1500
+   macro avg       0.64      0.64      0.64      1500
+weighted avg       0.78      0.77      0.77      1500
+
+
+──────────────────────────────────────────────────────────────────────
+                         GUARDANDO RESULTADOS
+──────────────────────────────────────────────────────────────────────
+
+💾 Métricas guardadas en: resultados/metricas_modelos.csv
+
+🏆 RANKING DE MODELOS (por F1 Macro):
+──────────────────────────────────────────────────────────────────────
+random_forest                  | F1 Macro: 0.6388 | Accuracy: 0.7713
+multinomial_nb                 | F1 Macro: 0.6042 | Accuracy: 0.6980
+decision_tree                  | F1 Macro: 0.4996 | Accuracy: 0.6133
+knn                            | F1 Macro: 0.4410 | Accuracy: 0.5807
+──────────────────────────────────────────────────────────────────────
+💾 Predicciones guardadas en: resultados/predicciones_test.csv
+
+══════════════════════════════════════════════════════════════════════
+                        EVALUACIÓN COMPLETADA
+══════════════════════════════════════════════════════════════════════
+
+✅ Evaluación finalizada
+📁 Resultados guardados en la carpeta 'resultados/'

@@ -422,32 +422,36 @@ def main():
     # Cargar configuración
     print("📖 Cargando configuración...")
     config = load_config(args.config, sections=['general', 'preprocessing', 'train'])
-    
+
     # Cargar datos
     print("\n📂 Cargando datos...")
-    data = load_data(config['train_dev'])
-    
+    # 'train_dev' está en la raíz porque load_config aplana la sección 'general.data'
+    train_file = config.get('train_dev')
+    data = load_data(train_file)
+
     # Separar X e y
-    target_col = config['column']
+    target_col = config.get('column')
     if target_col not in data.columns:
         print(f"❌ Error: columna '{target_col}' no encontrada en los datos")
         sys.exit(1)
-    
+
     X = data.drop(columns=[target_col])
     y = data[target_col]
-    
-    # Eliminar columnas innecesarias
-    drop_cols = config.get('drop_features', [])
-    if drop_cols:
-        drop_cols = [col for col in drop_cols if col in X.columns]
-        X = X.drop(columns=drop_cols)
-        print(f"🗑️ Columnas eliminadas: {drop_cols}")
-    
+
+    # Extraer las columnas a eliminar de la configuración (aplanada)
+    drop_features_config = config.get('drop_features', [])
+
+    # Limpiar Train principal
+    if drop_features_config:
+        cols_to_drop_train = [col for col in drop_features_config if col in X.columns]
+        X = X.drop(columns=cols_to_drop_train)
+        print(f"🗑️ Columnas eliminadas en Train: {cols_to_drop_train}")
+
     # Codificar variable objetivo si es categórica
     if not pd.api.types.is_numeric_dtype(y):
         le = LabelEncoder()
         y = le.fit_transform(y)
-        
+
         # Guardar encoder para usar en test
         os.makedirs('modelos', exist_ok=True)
         with open('modelos/label_encoder_y.pkl', 'wb') as f:
@@ -456,12 +460,12 @@ def main():
         print(f"   Clases: {le.classes_}")
 
         # --- NUEVA LÓGICA: DETECCIÓN DE DATASETS PRE-DIVIDIDOS ---
-        # Comprobamos si el usuario ha definido un 'dev_file' explícito en el config.json
-        dev_file = config.get('data', {}).get('dev_file', None)
+        # Como load_config aplana el diccionario, 'dev_file' está en la raíz
+        dev_file = config.get('dev_file', None)
 
         if dev_file and os.path.exists(dev_file):
             print(f"\n🧠 Modo IA Generativa Detectado: Usando splits pre-definidos")
-            print(f"   - Train: Cargado desde {config['data']['train_dev']}")
+            print(f"   - Train: Cargado desde {train_file}")
             print(f"   - Dev: Cargando desde {dev_file}")
 
             data_dev = load_data(dev_file)
@@ -473,12 +477,13 @@ def main():
             X_dev = data_dev.drop(columns=[target_col])
             y_dev = data_dev[target_col]
 
-            # Eliminar drop_features del Dev si las hay
-            if drop_cols:
-                drop_cols_dev = [col for col in drop_cols if col in X_dev.columns]
-                X_dev = X_dev.drop(columns=drop_cols_dev)
+            # Limpiar Dev adicional usando la configuración original
+            if drop_features_config:
+                cols_to_drop_dev = [col for col in drop_features_config if col in X_dev.columns]
+                X_dev = X_dev.drop(columns=cols_to_drop_dev)
+                print(f"🗑️ Columnas eliminadas en Dev: {cols_to_drop_dev}")
 
-            # Si la Y se codificó, codificamos la Y de Dev también
+            # Codificar la Y de Dev
             if not pd.api.types.is_numeric_dtype(y_dev):
                 y_dev = le.transform(y_dev)
 
@@ -486,6 +491,7 @@ def main():
             # MODO TRADICIONAL: DIVISIÓN TRAIN/DEV INTERNA
             print(f"\n✂️ Modo Tradicional: Dividiendo datos (Train/Dev)...")
 
+            # Como load_config aplana todo, las variables están en la raíz
             dev_size = config.get('dev_size', 0.25)
             random_state = config.get('random_state', 42)
 
@@ -495,10 +501,14 @@ def main():
                 stratify=y,
                 random_state=random_state
             )
-    
-    print(f"   - Train: {X_train.shape[0]} muestras")
-    print(f"   - Dev: {X_dev.shape[0]} muestras")
-    print(f"   - Proporción: {(1-dev_size)*100:.0f}% / {dev_size*100:.0f}%")
+
+        # Mostrar resumen de los datos resultantes
+        total_muestras = X_train.shape[0] + X_dev.shape[0]
+        prop_train = (X_train.shape[0] / total_muestras) * 100
+        prop_dev = (X_dev.shape[0] / total_muestras) * 100
+
+        print(f"   - Train: {X_train.shape[0]} muestras ({prop_train:.1f}%)")
+        print(f"   - Dev: {X_dev.shape[0]} muestras ({prop_dev:.1f}%)")
     
     # Entrenar cada modelo activo
     modelos = config.get('modelos', [])
