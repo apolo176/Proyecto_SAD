@@ -33,7 +33,7 @@ Se entiende que hay un descontento general con ambas plataformas, y al sosteners
 
 # Comparativa demográfica ¿existe sesgo de género?
 Los hombres y las mujeres tienen la misma tendencia negativa a la hora de votar, por lo que concluímos que el descontento es universal y no existe sesgo de género.
-![Evolución Anual, Media Bayesiana](Fotos-Informe/2.png)
+![Evolución Anual, Media Bayesiana](../Tableau/Fotos-Informe/2.png)
 
 ---
 
@@ -48,8 +48,8 @@ Como la media de cada empresa puede ir  de \[0,5\] (0 es que no hay reviews, y e
 
 El mapa es interactivo y se puede elegir que año mostrar de 2008 a 2025, además se puede ver una sección general que tiene en cuenta las reviews de todos los años (No la he subido por que gana Spotify por 0.2,0.15 en todos los países menos en Portugal que gana AppleMusic por -0.1, y un empate enseña bastante poco).
 
-![Evolución Anual, Media Bayesiana](Fotos-Informe/3.png)
-![Evolución Anual, Media Bayesiana](Fotos-Informe/4.png)
+![Evolución Anual, Media Bayesiana](../Tableau/Fotos-Informe/3.png)
+![Evolución Anual, Media Bayesiana](../Tableau/Fotos-Informe/4.png)
 
 
 ---
@@ -67,7 +67,7 @@ En un primer vistazo se ve que tenemos más problemas que puntos fuertes:
     - Bugs y problemas técnicos generales: Aparecen muchas palabras como service, access, update, account, sign, crashing...
     - Precios y problemas de facturación: Aparecen palabras como subscription, payment, money, trial... Apple Music no tiene una versión gratuita con funciones limitadas como Spotify, y muchas reviews se quejan de esta politica de empresa.
 
-![Evolución Anual, Media Bayesiana](Fotos-Informe/5.png)
+![Evolución Anual, Media Bayesiana](../Tableau/Fotos-Informe/5.png)
 
 ## Spotify
 Spotify tiene una nube de palabras más neutras, aunque tiene muchas palabras completamente negativas se salva en más que en un solo aspecto:
@@ -79,7 +79,7 @@ Spotify tiene una nube de palabras más neutras, aunque tiene muchas palabras co
     - Shuffle obligatorio y no poder saltar anuncios: Palabras como shuffle y skip demuestran que estas funciones son bastante molestas para los usuarios gratuitos.
     - Errores generales y actualizaciones: Crashing, update... Hay actualizaciones con problemas técnicos.
 
-![Evolución Anual, Media Bayesiana](Fotos-Informe/6.png)
+![Evolución Anual, Media Bayesiana](../Tableau/Fotos-Informe/6.png)
 
 ## Conclusiones
 Ambos tienen problemas estructurales de negocio y problemas con las actualizaciones.
@@ -95,7 +95,7 @@ Mejoras propuestas:
 
 # Clustering y tópicos; Análisis en profundidad
 
-![Evolución Anual, Media Bayesiana](Fotos-Informe/7.png)
-![Evolución Anual, Media Bayesiana](Fotos-Informe/8.png)
+![Evolución Anual, Media Bayesiana](../Tableau/Fotos-Informe/7.png)
+![Evolución Anual, Media Bayesiana](../Tableau/Fotos-Informe/8.png)
 
 ---
