@@ -27,7 +27,7 @@ Hay sobretodo cuatro franjas importantes en el gráfico:
 - 2023-2025: Estancamiento en notas negativas y tendencia al uno.
 
 Se entiende que hay un descontento general con ambas plataformas, y al sostenerse tanto en el tiempo el problema ha de ser estructural o de negocio más que un error o actualización puntual.
-![Evolución Anual, Media Bayesiana](Fotos-Informe/1.png)
+![Evolución Anual, Media Bayesiana](../Tableau/Fotos-Informe/1.png)
 
 ---
 
